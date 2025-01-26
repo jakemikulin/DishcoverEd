@@ -6,8 +6,9 @@ import ast
 from collections import defaultdict
 
 def load_dataset(file_path):
-    df = pd.read_csv(file_path, nrows=1000)
-    return df.iloc[0:10]
+    df = pd.read_csv(file_path)
+    print("Loaded dataset")
+    return df
 
 def preprocess(text):
     tokens = tokenise(text)
@@ -50,9 +51,11 @@ def stem(word_array):
 def build_inverted_index_with_ingredient_ids(df):
     # Inverted index structure: {term: {doc_id: {ingredient_id: [positions]}}}
     inverted_index = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-
+    total = len(df["ingredients"])
     # Iterate through each row in the DataFrame
     for doc_id, ingredients_string in enumerate(df["ingredients"], start=1):
+        if doc_id % 100000 == 0:
+            print(f"At document {doc_id} / {total}")
         # Convert ingredients string into a list of ingredients
         ingredients_array = ast.literal_eval(ingredients_string)
 
