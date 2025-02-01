@@ -3,14 +3,17 @@ import numpy as np
 import regex as re
 import Stemmer
 import ast
+import pickle
 from collections import defaultdict
 
 def load_dataset(file_path):
+    print("Loading dataset")
     df = pd.read_csv(file_path)
     print("Loaded dataset")
     return df
 
 def preprocess(text):
+    
     tokens = tokenise(text)
 
     preprocessed = stem(tokens)
@@ -66,11 +69,28 @@ def build_inverted_index_with_ingredient_ids(df):
             # Add each token to the inverted index with positions
             for pos, term in enumerate(tokens):
                 inverted_index[term][doc_id][ingredient_id].append(pos + 1)
+    print("Built inverted index!")
     
+    # Can't pickle defaultdict objects.
+    def convert_to_regular_dict(d):
+        if isinstance(d, defaultdict):
+            return {k: convert_to_regular_dict(v) for k, v in d.items()}
+        return d
+    
+    inverted_index = convert_to_regular_dict(inverted_index)
+    
+    output_file = 'inverted_index.pkl'
+    print("Pickle dumping inverted index")
+    with open(output_file, 'wb') as f:
+        pickle.dump(inverted_index, f)
+    print(f"Saved inverted index to {output_file}")
+        
+
     return inverted_index
 
 
 def format_inverted_index(inverted_index):
+    print("Formatting inverted index to write.")
     # Format the inverted index for easier visualization
     formatted_inverted_index = []
 
@@ -84,20 +104,91 @@ def format_inverted_index(inverted_index):
                 pos_str = ','.join(map(str, positions))
                 formatted_inverted_index.append(f"\t\t{ingredient_id}:{pos_str}")
     
+    print("Finished formatting.")
     return '\n'.join(formatted_inverted_index)
 
 
 
-def main():
+def generate_inverted_index_incl_quantities():
     dataset_file = 'recipes_data.csv'
     df = load_dataset(dataset_file)
     inverted_index = build_inverted_index_with_ingredient_ids(df)
     formatted_index = format_inverted_index(inverted_index)
-    # print(formatted_index)
 
+    print("Writing index to inverted_index.txt")
     with open('inverted_index.txt', 'w') as f:
         f.write(formatted_index)
+    f.close()
+    print("Finished.")
+    
+def build_simple_inverted_index(df):
+    # Inverted index structure: {term: {doc_id: [positions]}}
+    inverted_index = defaultdict(lambda: defaultdict(list))
+    total = len(df["NER"])
+    # Iterate through each row in the DataFrame
+    for doc_id, ingredients_string in enumerate(df["NER"], start=1):
+        if doc_id % 100000 == 0:
+            print(f"At document {doc_id} / {total}")
+        tokens = preprocess(ingredients_string)
+        # Add each token to the inverted index with positions
+        for pos, term in enumerate(tokens):
+            inverted_index[term][doc_id].append(pos + 1)
+    
+    print("Built inverted index!")
+    
+    # Can't pickle defaultdict objects.
+    def convert_to_regular_dict(d):
+        if isinstance(d, defaultdict):
+            return {k: convert_to_regular_dict(v) for k, v in d.items()}
+        return d
+    
+    inverted_index = convert_to_regular_dict(inverted_index)
+    
+    output_file = 'inverted_index_simple.pkl'
+    print("Pickle dumping inverted index")
+    with open(output_file, 'wb') as f:
+        pickle.dump(inverted_index, f)
+    print(f"Saved inverted index to {output_file}")
+    
+    return inverted_index
 
+def format_inverted_index_simple(inverted_index):
+    print("Formatting inverted index to write.")
+    # Format the inverted index for easier visualization
+    formatted_inverted_index = []
+
+    for term, doc_info in inverted_index.items():
+        df = len(doc_info)
+        formatted_inverted_index.append(f"{term}:{df}")
+
+        for doc_id in doc_info.keys():
+            formatted_inverted_index.append(f"\t{doc_id}:")
+            positions = doc_info[doc_id]
+            pos_str = ','.join(map(str, positions))
+            formatted_inverted_index.append(f"\t\t{pos_str}")
+    
+    print("Finished formatting.")
+    return '\n'.join(formatted_inverted_index)
+
+def generate_inverted_index_simple():
+    dataset_file = 'recipes_data.csv'
+    df = load_dataset(dataset_file)
+    inverted_index = build_simple_inverted_index(df)
+    formatted_index = format_inverted_index_simple(inverted_index)
+
+    print("Writing index to inverted_index_simple.txt")
+    with open('inverted_index_simple.txt', 'w') as f:
+        f.write(formatted_index)
+    f.close()
+    print("Finished.")
+    
+    
+
+def main():
+    # generate_inverted_index_incl_quantities()
+    generate_inverted_index_simple()
+        
+    
 
 if __name__ == '__main__':
     main()
