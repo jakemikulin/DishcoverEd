@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const sampleRecipes = [
   {
@@ -57,8 +58,11 @@ function ResultsPage() {
   return (
     <div className="page-container">
       <header className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px', height: '80px' }}>
-        <h1 className="logo" style={{ marginLeft: '20px', marginTop: '25px' }}>Dishcover<span className="highlight">ED</span></h1>
-        <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px', marginLeft: '20px' }}>
+      <h1 className="logo">
+  <Link to="/" className="logo-link">
+    Dishcover<span className="highlight">ED</span>
+  </Link>
+</h1>        <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px', marginLeft: '20px' }}>
           <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
             <input
               type="text"

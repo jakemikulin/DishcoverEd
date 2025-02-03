@@ -79,6 +79,52 @@
   background-color: #0056b3;
 }
 
+.header {
+  position: fixed; /* Keeps the header in place */
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width */
+  background-color: #1e1e1e; /* Solid background */
+  padding: 15px 20px; /* Adjust padding for equal spacing */
+  display: flex;
+  align-items: center; /* Centers elements vertically */
+  justify-content: space-between;
+  z-index: 1000; /* Ensures it's always on top */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+  height: 80px; /* Set a consistent height */
+}
+
+.header h1 {
+  color: white;
+}
+
+.logo-link {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Keeps the original color */
+  font-size: inherit; /* Ensures it matches the h1 size */
+  font-weight: inherit; /* Maintains original weight */
+  display: inline-block; /* Prevents layout shifting */
+  margin-left: 20px; /* Increases left margin */
+}
+
+.logo-link:focus,
+.logo-link:active,
+.logo-link:hover {
+  color: inherit; /* Prevents color change on highlight/hover */
+}
+
+
+
+.search-container {
+  display: flex;
+  align-items: center; /* Ensures the search box is vertically centered */
+  height: 100%; /* Matches header height */
+}
+
+.results-container {
+  margin-top: 100px; /* Adjust based on header height */
+}
+
 .recipe-card {
   background: #1e1e1e; /* Dark background to match your theme */
   border: 1px solid #444; /* Subtle border */
