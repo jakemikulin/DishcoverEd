@@ -113,8 +113,6 @@
   color: inherit; /* Prevents color change on highlight/hover */
 }
 
-
-
 .search-container {
   display: flex;
   align-items: center; /* Ensures the search box is vertically centered */
@@ -122,7 +120,25 @@
 }
 
 .results-container {
-  margin-top: 100px; /* Adjust based on header height */
+  margin-top: 80px; /* Adjust based on header height */
+}
+
+.results-info {
+  display: flex;
+  align-items: center; /* Keeps the text and search time inline */
+  gap: 10px; /* Adds spacing between them */
+  margin-top: 10px;
+}
+
+.results-text {
+  font-size: 1.2rem; /* Makes "Results for" smaller */
+  font-weight: bold;
+  color: #ddd; /* Adjust color for readability */
+}
+
+.search-time {
+  font-size: 0.9rem; /* Makes search time slightly smaller */
+  color: #aaa; /* Lighter color for subtle effect */
 }
 
 .recipe-card {

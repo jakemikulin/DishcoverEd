@@ -29,18 +29,23 @@ function ResultsPage() {
   const [recipes, setRecipes] = useState<typeof sampleRecipes>([]);
   const [searchTerm, setSearchTerm] = useState(query);
   const navigate = useNavigate();
+  const [searchTime, setSearchTime] = useState<number | null>(null);
 
   useEffect(() => {
-    document.title = query ? `Results for "${query}" - DishcoverEd` : "DishcoverEd - Recipe Search";
+    const startTime = performance.now(); // Start time
 
+    // Filter recipes based on search query logic here [PLACEHOLDER]
     if (query) {
       const filteredRecipes = sampleRecipes.filter(recipe =>
         recipe.title.toLowerCase().includes(query) || 
         recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
       );
-
       setRecipes(filteredRecipes);
     }
+
+    const endTime = performance.now(); // End time
+    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8))); // Calculate time in seconds
+    
   }, [query]);
 
   const handleSearch = () => {
@@ -89,7 +94,10 @@ function ResultsPage() {
       </header>
       
       <main className="results-container">
-        <h1>Results for "{query}"</h1>
+<div className="results-info">
+  <h2 className="results-text">Results for "{query}"</h2>
+  {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
+</div>
         <div className="recipe-list">
           {recipes.length > 0 ? (
             recipes.map((recipe, index) => (
