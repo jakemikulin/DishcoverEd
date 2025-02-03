@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +20,10 @@ function HomePage() {
 
   return (
     <div className="App">
+
+      <img src={dishcoveredLogo} alt="DishcoverEd Logo" className="home-logo" />
+
+
       <h1 className="logo">Dishcover<span className="highlight">Ed</span></h1>
       <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px' }}>
         {/* Search box wrapper to keep clear button inside */}

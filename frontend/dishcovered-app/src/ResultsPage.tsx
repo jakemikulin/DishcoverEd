@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 
 const sampleRecipes = [
   {
@@ -21,6 +22,24 @@ const sampleRecipes = [
     times: { prep: 5, cook: 10, total: 15 },
     tags: ['Vegan', 'Gluten Free', 'Breakfast'],
   },
+  {
+    title: 'Blueberry Almond Overnight Oats',
+    author: 'Chef HealthyBites',
+    ingredients: ['1/2 cup rolled oats', '1/2 cup almond milk', '1/4 cup fresh blueberries', '1 tbsp chia seeds', '1 tbsp honey', '1 tbsp sliced almonds'],
+    instructions: ['In a jar, combine oats, almond milk, and chia seeds. Stir well.', 'Add honey and mix to combine.', 'Top with fresh blueberries and sliced almonds.', 'Cover and refrigerate overnight.', 'Stir before eating and enjoy!'],
+    nutrition: { calories: 260, fiber: '6g', protein: '7g' },
+    times: { prep: 5, cook: 0, total: 5 },
+    tags: ['Vegetarian', 'Healthy', 'Breakfast'],
+  },
+  {
+    title: 'Spicy Chickpea Avocado Toast',
+    author: 'Foodie Fiesta',
+    ingredients: ['1 slice whole-grain bread', '1/2 ripe avocado', '1/4 cup canned chickpeas', '1/2 tsp red chili flakes', '1/4 tsp garlic powder', '1 tbsp lemon juice', 'Salt & pepper to taste'],
+    instructions: ['Toast the whole-grain bread until golden and crispy.', 'In a bowl, mash the avocado with lemon juice, salt, and pepper.', 'Mash chickpeas slightly and mix with garlic powder and red chili flakes.', 'Spread mashed avocado over the toast.', 'Top with spicy chickpea mixture and enjoy!'],
+    nutrition: { calories: 320, fiber: '8g', protein: '9g' },
+    times: { prep: 5, cook: 2, total: 7 },
+    tags: ['Vegan', 'Spicy', 'Lunch'],
+  }
 ];
 
 function ResultsPage() {
@@ -44,7 +63,7 @@ function ResultsPage() {
     }
 
     const endTime = performance.now(); // End time
-    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8))); // Calculate time in seconds
+    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
     
   }, [query]);
 
@@ -63,6 +82,8 @@ function ResultsPage() {
   return (
     <div className="page-container">
       <header className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px', height: '80px' }}>
+        {/* Logo on the right*/}
+        <img src={dishcoveredLogo} alt="DishcoverEd Logo" className="header-logo" />
       <h1 className="logo">
         <Link to="/" className="logo-link">
         Dishcover<span className="highlight">Ed</span>
@@ -91,13 +112,14 @@ function ResultsPage() {
           </div>
           <button className="search-btn" onClick={handleSearch} style={{ flexShrink: 0 }}>🔍</button>
         </div>
+
       </header>
       
       <main className="results-container">
-<div className="results-info">
-  <h2 className="results-text">Results for "{query}"</h2>
-  {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
-</div>
+        <div className="results-info">
+          <h2 className="results-text">Results for "{query}"</h2>
+          {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
+        </div>
         <div className="recipe-list">
           {recipes.length > 0 ? (
             recipes.map((recipe, index) => (
