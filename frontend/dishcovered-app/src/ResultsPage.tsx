@@ -9,6 +9,16 @@ const sampleRecipes = [
     instructions: ['Boil oat milk in a saucepan.', 'Add oats and stir for 3-5 minutes.', 'Mix in cinnamon, apples, and pecans.', 'Drizzle with maple syrup before serving.'],
     nutrition: { calories: 210, fiber: '3.4g', protein: '5g' },
     times: { prep: 5, cook: 10, total: 15 },
+    tags: ['Vegan', 'Gluten Free', 'Breakfast'],
+  },
+  {
+    title: 'Some Other Cool Oatmeal',
+    author: 'FirstName LastName',
+    ingredients: ['1 cup rolled oats', '1 large apple', '1/2 tsp ground cinnamon', 'Pinch of Ground Nutmeg', '1/4 cup chopped pecans'],
+    instructions: ['Heat coconut oil in a medium-sized saucepan over medium heat.', 'Add in the apples and sauté for 2-3 minutes. Stir in the cinnamon and nutmeg.'],
+    nutrition: { calories: 80, fiber: '1.8g', protein: '3.4g' },
+    times: { prep: 5, cook: 10, total: 15 },
+    tags: ['Vegan', 'Gluten Free', 'Breakfast'],
   },
 ];
 
@@ -73,26 +83,41 @@ function ResultsPage() {
         </div>
       </header>
       
-      <main className="results-container" style={{ marginTop: '100px' }}>
+      <main className="results-container">
         <h1>Results for "{query}"</h1>
         <div className="recipe-list">
           {recipes.length > 0 ? (
             recipes.map((recipe, index) => (
               <div key={index} className="recipe-card">
-                <h2>{recipe.title}</h2>
-                <p>by {recipe.author}</p>
-                <h3>Ingredients</h3>
-                <ul>{recipe.ingredients.map((item, idx) => <li key={idx}>{item}</li>)}</ul>
-                <h3>Instructions</h3>
-                <ol>{recipe.instructions.map((step, idx) => <li key={idx}>{step}</li>)}</ol>
-                <h3>Nutritional Information</h3>
-                <p>Calories: {recipe.nutrition.calories}</p>
-                <p>Fiber: {recipe.nutrition.fiber}</p>
-                <p>Protein: {recipe.nutrition.protein}</p>
-                <h3>Time</h3>
-                <p>Prep Time: {recipe.times.prep} min</p>
-                <p>Cook Time: {recipe.times.cook} min</p>
-                <p>Total Time: {recipe.times.total} min</p>
+                <div className="recipe-header">
+                  <h2>{recipe.title}</h2>
+                  <p className="recipe-author">by {recipe.author}</p>
+                  <div className="recipe-tags">
+                    {recipe.tags.map((tag, idx) => <span key={idx} className="recipe-tag">{tag}</span>)}
+                  </div>
+                </div>
+                <div className="recipe-body">
+                  <div className="recipe-ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>{recipe.ingredients.map((item, idx) => <li key={idx}>{item}</li>)}</ul>
+                  </div>
+                  <div className="recipe-instructions">
+                    <h3>Instructions</h3>
+                    <ol>{recipe.instructions.map((step, idx) => <li key={idx}>{step}</li>)}</ol>
+                  </div>
+                  <div className="recipe-nutrition">
+                    <h3>Nutritional Information</h3>
+                    <p>Calories: {recipe.nutrition.calories}</p>
+                    <p>Fiber: {recipe.nutrition.fiber}</p>
+                    <p>Protein: {recipe.nutrition.protein}</p>
+                  </div>
+                  <div className="recipe-time">
+                    <h3>Time</h3>
+                    <p><strong>Prep Time:</strong> {recipe.times.prep} minutes</p>
+                    <p><strong>Cook Time:</strong> {recipe.times.cook} minutes</p>
+                    <p><strong>Total Time:</strong> {recipe.times.total} minutes</p>
+                  </div>
+                </div>
               </div>
             ))
           ) : (
