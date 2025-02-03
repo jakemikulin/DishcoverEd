@@ -68,7 +68,7 @@
   margin-left: 10px; /* Separate it from input */
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  background-color: #0077ff;
+  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -76,7 +76,7 @@
 }
 
 .search-btn:hover {
-  background-color: #0056b3;
+  background-color: #4caf4fd6;
 }
 
 .home-logo {
