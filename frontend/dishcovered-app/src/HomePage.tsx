@@ -19,7 +19,7 @@ function HomePage() {
 
   return (
     <div className="App">
-      <h1 className="logo">Dishcover<span className="highlight">ED</span></h1>
+      <h1 className="logo">Dishcover<span className="highlight">Ed</span></h1>
       <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px' }}>
         {/* Search box wrapper to keep clear button inside */}
         <div style={{ position: 'relative', flex: 1, display: 'flex' }}>

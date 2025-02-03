@@ -59,10 +59,11 @@ function ResultsPage() {
     <div className="page-container">
       <header className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px', height: '80px' }}>
       <h1 className="logo">
-  <Link to="/" className="logo-link">
-    Dishcover<span className="highlight">ED</span>
-  </Link>
-</h1>        <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px', marginLeft: '20px' }}>
+        <Link to="/" className="logo-link">
+        Dishcover<span className="highlight">Ed</span>
+        </Link>
+        </h1>        
+        <div className="search-container" style={{ width: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '20px', marginLeft: '20px' }}>
           <div style={{ position: 'relative', flex: 1, display: 'flex' }}>
             <input
               type="text"
