@@ -12,10 +12,20 @@ def load_dataset(file_path):
     print("Loaded dataset")
     return df
 
-def preprocess(text):
-    
-    tokens = tokenise(text)
+def preprocess_title(text):
+    try:
+        tokens = tokenise(text)
+        preprocessed = stem(tokens)
+    except:
+        preprocessed = []
 
+    
+
+    return preprocessed
+
+def preprocess(text):
+
+    tokens = tokenise_title(text)
     preprocessed = stem(tokens)
 
     return preprocessed
@@ -25,6 +35,12 @@ def tokenise(raw_text):
     # store measurements/quantities together (eg. 1 c. and 1 1/2 lb.)
     raw_text = raw_text.lower()
     match = re.findall('[a-zA-Z0-9/]+(?: [0-9/]+)?(?: [a-zA-Z]+\.)?', raw_text)
+
+    return match
+
+def tokenise_title(raw_text):
+    raw_text = raw_text.lower()
+    match = re.findall('[a-zA-Z0-9]+', raw_text)
 
     return match
 
@@ -182,11 +198,56 @@ def generate_inverted_index_simple():
     f.close()
     print("Finished.")
     
+def generated_inverted_index_simple_titles():
+    dataset_file = 'recipes_data.csv'
+    df = load_dataset(dataset_file)
+    inverted_index = build_simple_inverted_index_titles(df)
+    formatted_index = format_inverted_index_simple(inverted_index)
+
+    print("Writing index to inverted_index_simple_titles.txt")
+    with open('inverted_index_simple_titles.txt', 'w') as f:
+        f.write(formatted_index)
+    f.close()
+    print("Finished.")
+    
+    
+    
+def build_simple_inverted_index_titles(df):
+    # Inverted index structure: {term: {doc_id: [positions]}}
+    inverted_index = defaultdict(lambda: defaultdict(list))
+    total = len(df["title"])
+    # Iterate through each row in the DataFrame
+    for doc_id, ingredients_string in enumerate(df["title"], start=1):
+        if doc_id % 100000 == 0:
+            print(f"At document {doc_id} / {total}")
+        tokens = preprocess_title(ingredients_string)
+        # Add each token to the inverted index with positions
+        for pos, term in enumerate(tokens):
+            inverted_index[term][doc_id].append(pos + 1)
+    
+    print("Built inverted index!")
+    
+    # Can't pickle defaultdict objects.
+    def convert_to_regular_dict(d):
+        if isinstance(d, defaultdict):
+            return {k: convert_to_regular_dict(v) for k, v in d.items()}
+        return d
+    
+    inverted_index = convert_to_regular_dict(inverted_index)
+    
+    output_file = 'inverted_index_simple_titles.pkl'
+    print("Pickle dumping inverted index")
+    with open(output_file, 'wb') as f:
+        pickle.dump(inverted_index, f)
+    print(f"Saved inverted index to {output_file}")
+    
+    return inverted_index
     
 
 def main():
     # generate_inverted_index_incl_quantities()
-    generate_inverted_index_simple()
+    # generate_inverted_index_simple()
+    generated_inverted_index_simple_titles()
         
     
 
