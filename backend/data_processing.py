@@ -12,6 +12,26 @@ def load_dataset(file_path):
     print("Loaded dataset")
     return df
 
+def save_recipes_as_dict_pkl(df, output_file="recipes_dict.pkl"):
+
+    print("Saving recipes as dictionary")
+
+    # Ensure 'doc_id' exists and is used as the index
+    if "doc_id" not in df.columns:
+        df = df.reset_index().rename(columns={"index": "doc_id"})  # If no doc_id exists, use DataFrame index
+    
+    # Create dictionary with {doc_id: recipe_data}
+    recipes_dict = df.set_index("doc_id").to_dict(orient="index")
+
+    # Save dictionary as a pickle file
+    with open(output_file, "wb") as f:
+        pickle.dump(recipes_dict, f)
+
+    print(f"Saved recipes dictionary to {output_file}")
+    return recipes_dict
+
+    
+
 def preprocess_title(text):
     try:
         tokens = tokenise(text)
@@ -247,7 +267,8 @@ def build_simple_inverted_index_titles(df):
 def main():
     # generate_inverted_index_incl_quantities()
     # generate_inverted_index_simple()
-    generated_inverted_index_simple_titles()
+    # generated_inverted_index_simple_titles()
+    pass
         
     
 
