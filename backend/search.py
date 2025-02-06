@@ -30,7 +30,10 @@ def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=
     # Determine the total number of documents.
     # Assuming that document IDs are positive integers starting from 1,
     # we compute total_docs as the maximum doc_id found in the index.
-    total_docs = 10000
+    
+    # total_docs = 10000
+    total_docs = max(max(postings.keys()) for postings in inverted_index.values())
+    print(total_docs)
     
     # A dictionary to accumulate TF-IDF scores for each document.
     scores = defaultdict(float)
@@ -55,8 +58,10 @@ def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=
         idf = math.log(total_docs / doc_freq)
 
         # For each document containing the token, add the TF-IDF contribution.
+        
         for doc_id, positions in postings.items():
             # Term frequency is the number of occurrences (length of positions list).
+            print(f"{doc_id} {positions}")
             tf = len(positions)
             # Add the tf-idf score; if the term appears multiple times, its contributions add up.
             scores[doc_id] += tf * idf

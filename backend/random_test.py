@@ -8,6 +8,7 @@ with open('inverted_index_simple.pkl', 'rb') as f:
 with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 print("Loaded")
+print(recipes_dict[27311])
 while True:
     str = input(": ")
     if str == "q!":
@@ -16,4 +17,3 @@ while True:
     # Print the ranked document IDs and their scores.
     for doc_id, score in results:
         print(f"Document {doc_id} : {recipes_dict[doc_id]['title']} - Score: {score:.4f}")
-    
