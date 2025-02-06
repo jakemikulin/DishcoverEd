@@ -3,7 +3,7 @@ import math
 from collections import defaultdict
 from data_processing import preprocess
 
-def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=10):
+def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=10, inverted_index = None):
     """
     Perform a TF-IDF search over documents using the inverted index.
 
@@ -15,9 +15,11 @@ def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=
     Returns:
       List of tuples (doc_id, score) sorted by descending score.
     """
+    if inverted_index == None:
     # Load the inverted index from the pickle file.
-    with open(inverted_index_file, 'rb') as f:
-        inverted_index = pickle.load(f)
+        with open(inverted_index_file, 'rb') as f:
+            inverted_index = pickle.load(f)
+    
 
     # Preprocess the query to obtain tokens.
     # Make sure your `preprocess` function is defined/imported.
@@ -73,7 +75,9 @@ if __name__ == '__main__':
     with open('queries.txt', 'a') as f:
         f.write(query + '\n')
     # Call the search function.
-    results = tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=10)
+
+
+    results = tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=10, inverted_index=None)
     # Print the ranked document IDs and their scores.
     for doc_id, score in results:
         print(f"Document {doc_id} - Score: {score:.4f}")
