@@ -293,7 +293,7 @@ def build_simple_inverted_index_titles(df):
 
 def main():
     # generate_inverted_index_incl_quantities()
-    # generate_inverted_index_simple()
+    generate_inverted_index_simple()
     # generated_inverted_index_simple_titles()
     pass
         
