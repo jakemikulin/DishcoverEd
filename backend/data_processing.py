@@ -6,29 +6,14 @@ import ast
 import pickle
 from collections import defaultdict
 
+# Libary of functions that are useful for building the data to be searched through using the backend.
+
 def load_dataset(file_path):
     print("Loading dataset")
     df = pd.read_csv(file_path)
     print("Loaded dataset")
     return df
 
-# def save_recipes_as_dict_pkl(df, output_file="recipes_dict.pkl"):
-
-#     print("Saving recipes as dictionary")
-
-#     # Ensure 'doc_id' exists and is used as the index
-#     if "doc_id" not in df.columns:
-#         df = df.reset_index().rename(columns={"index": "doc_id"}) 
-    
-#     # Create dictionary with {doc_id: recipe_data}
-#     recipes_dict = df.set_index("doc_id").to_dict(orient="index")
-
-#     # Save dictionary as a pickle file
-#     with open(output_file, "wb") as f:
-#         pickle.dump(recipes_dict, f)
-
-#     print(f"Saved recipes dictionary to {output_file}")
-#     return recipes_dict
 
 def save_recipes_as_dict_pkl(df, output_file="recipes_dict.pkl"):
     print("Saving recipes as dictionary")
@@ -127,7 +112,7 @@ def build_inverted_index_with_ingredient_ids(df):
     
     inverted_index = convert_to_regular_dict(inverted_index)
     
-    output_file = 'inverted_index.pkl'
+    output_file = 'inverted_index_ingredient_ids.pkl'
     print("Pickle dumping inverted index")
     with open(output_file, 'wb') as f:
         pickle.dump(inverted_index, f)
@@ -289,15 +274,4 @@ def build_simple_inverted_index_titles(df):
     print(f"Saved inverted index to {output_file}")
     
     return inverted_index
-    
-
-def main():
-    # generate_inverted_index_incl_quantities()
-    generate_inverted_index_simple()
-    # generated_inverted_index_simple_titles()
-    pass
-        
-
-if __name__ == '__main__':
-    main()
     
