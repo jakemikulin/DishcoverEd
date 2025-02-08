@@ -9,7 +9,7 @@ def main():
     df = load_dataset('recipes_data.csv')
     save_recipes_as_dict_pkl(df)
     build_simple_inverted_index(df)
-    build_inverted_index_with_ingredient_ids(df)
+    # build_inverted_index_with_ingredient_ids(df)
     build_simple_inverted_index_titles(df)
     
 if __name__ == "__main__":
