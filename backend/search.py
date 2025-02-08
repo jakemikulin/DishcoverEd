@@ -61,7 +61,6 @@ def tf_idf_search(query, inverted_index_file='inverted_index_simple.pkl', top_k=
         
         for doc_id, positions in postings.items():
             # Term frequency is the number of occurrences (length of positions list).
-            print(f"{doc_id} {positions}")
             tf = len(positions)
             # Add the tf-idf score; if the term appears multiple times, its contributions add up.
             scores[doc_id] += tf * idf
