@@ -15,7 +15,7 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese', # I thin
                                   'british', 'cajun_creole', 'filipino',
                                   'indian', 'irish', 'moroccan',
                                   'jamaican', 'spanish', 'japanese',
-                                  'greek'}, inverted_index_file='inverted_index_simple.pkl', top_k=10, inverted_index = None):
+                                  'greek'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None):
     """
     Perform a TF-IDF search over documents using the inverted index.
 
