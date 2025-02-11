@@ -10,11 +10,11 @@ def load_indices():
     # build_simple_inverted_index_titles(df)
 
 
-def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese', # I think this is all the cuisines
-                                  'italian', 'mexican', 'french',
+def tf_idf_search(query, cuisines={'southern_us', 'brazilian', 'russian', 'chinese',
+                                  'italian', 'mexican', 'french', 'korean',
                                   'british', 'cajun_creole', 'filipino',
-                                  'indian', 'irish', 'moroccan',
-                                  'jamaican', 'spanish', 'japanese',
+                                  'indian', 'irish', 'moroccan', 'thai',
+                                  'jamaican', 'spanish', 'japanese', 'vietnamese',
                                   'greek'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None):
     """
     Perform a TF-IDF search over documents using the inverted index.
