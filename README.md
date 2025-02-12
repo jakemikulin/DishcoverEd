@@ -14,10 +14,10 @@ For too long, people have been fruitlessly searching for recipes, only to have t
 ## Commands to Run [TEST]
 
 Terminal 1
-cd backend
-python init_data.py
-python app.py
+- cd backend 
+- python init_data.py
+- python app.py
 
 Terminal 2
-cd frontend/dishcovered-app
-npm run dev
+- cd frontend/dishcovered-app
+- npm run dev
