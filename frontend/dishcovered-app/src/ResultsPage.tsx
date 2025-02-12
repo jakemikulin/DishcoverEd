@@ -42,6 +42,22 @@ const sampleRecipes = [
   }
 ];
 
+const highlightText = (text: string, query: string) => {
+  if (!query) return text;
+
+  // Convert query into an array of words, escaping special regex characters
+  const queryWords = query.split(/\s+/).map(word => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+
+  if (queryWords.length === 0) return text;
+
+  // Create a regex to match any of the query words
+  const regex = new RegExp(`(${queryWords.join("|")})`, "gi");
+
+  return text.split(regex).map((part, idx) =>
+    regex.test(part) ? <strong key={idx}>{part}</strong> : part
+  );
+};
+
 function ResultsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
@@ -134,7 +150,11 @@ function ResultsPage() {
                 <div className="recipe-body">
                   <div className="recipe-ingredients">
                     <h3>Ingredients</h3>
-                    <ul>{recipe.ingredients.map((item, idx) => <li key={idx}>{item}</li>)}</ul>
+                    <ul>
+                      {recipe.ingredients.map((item, idx) => (
+                        <li key={idx}>{highlightText(item, query)}</li>
+                      ))}
+                    </ul>
                   </div>
                   <div className="recipe-instructions">
                     <h3>Instructions</h3>
