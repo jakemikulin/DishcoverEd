@@ -14,8 +14,9 @@ with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 
 app = Flask(__name__)
-
-CORS(app, origins="http://localhost:5173")
+cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+# CORS(app, origins="http://localhost:5173")
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route("/")
