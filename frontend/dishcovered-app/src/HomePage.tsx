@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dishcoveredLogo from './assets/dishcovered-logo-green.png';
+import Modal from './Modal';
+
+
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -16,6 +21,18 @@ function HomePage() {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleApplyFilters = (filters) => {
+    setSelectedFilters(filters);
   };
 
   return (
@@ -50,7 +67,12 @@ function HomePage() {
         
         {/* Search button is fully separate */}
         <button className="search-btn" onClick={handleSearch} style={{ flexShrink: 0 }}>🔍</button>
+        <button className="filter-btn" onClick={handleOpenModal}></button>
       </div>
+
+      {isModalOpen && (
+        <Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
+      )}
     </div>
   );
 }
