@@ -4,7 +4,7 @@ For too long, people have been fruitlessly searching for recipes, only to have t
 
 ## Team
 
-- [Jake Mikulin](https://github.com/jakemikulin) (Frontend)
+- [Jake Mikulin](https://github.com/jakemikulin) (Frontend and Project Manager)
 - [Dylan Drucker](https://github.com/DylanDrucker) (Frontend)
 - [James Maxwell](https://github.com/jamesamaxwell) (Backend)
 - [Nikita Rameshkumar](https://github.com/nikita-ramesh) (Backend)
