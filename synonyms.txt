@@ -95,3 +95,46 @@
     Peeler → Parer, Skinner, Scraper
     Colander → Strainer, Sieve, Drainer
     Rolling pin → Roller, Dough roller, Pastry pin
+
+7. Ingredient Synonyms
+
+    Eggplant → Aubergine, Brinjal
+    Coriander → Cilantro, Chinese parsley
+    Zucchini → Courgette, Summer squash
+    Chickpeas → Garbanzo beans, Bengal gram
+    Bell pepper → Capsicum, Sweet pepper
+    Beetroot → Beet, Red beet
+    Green onion → Scallion, Spring onion
+    Arugula → Rocket, Rucola
+    Yam → Sweet potato, Dioscorea
+    Corn → Maize, Sweetcorn
+    Pumpkin → Squash, Winter squash
+    Okra → Lady's finger, Bhindi
+    Mushroom → Fungus, Toadstool
+    Carrot → Orange root, Daucus carota
+    Coconut → Cocos nucifera, Copra
+    Cucumber → Gherkin, Pickling cucumber
+    Tamarind → Imli, Indian date
+    Tofu → Bean curd, Soy curd
+    Turmeric → Curcuma, Indian saffron
+    Ginger → Zingiber, Adrak
+    Mustard greens → Leaf mustard, Brassica juncea
+    Banana → Plantain, Cavendish banana
+    Apple → Malus, Orchard apple
+    Grape → Vine fruit, Currant
+    Orange → Citrus sinensis, Mandarin
+    Lemon → Citrus limon, Limón
+    Lime → Citrus aurantiifolia, Key lime
+    Mango → King of fruits, Aam
+    Pineapple → Ananas, Bromeliad fruit
+    Strawberry → Fragaria, Garden strawberry
+    Blueberry → Vaccinium
+    Cherry → Prunus, Stone fruit
+    Peach → Prunus persica
+    Plum → Prunus domestica, Stone fruit
+    Pear → Pyrus, Bartlett pear
+    Watermelon → Citrullus, Melon
+    Papaya → Pawpaw, Carica papaya
+    Coconut → Cocos nucifera, Copra
+    Fig → Ficus, Anjeer
+    Pomegranate → Punica, Anaar
