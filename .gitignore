@@ -1,2 +1,11 @@
 recipes_data.csv
 inverted_index.txt
+inverted_index_simple.txt
+inverted_index_simple_titles.txt
+inverted_index_simple.pkl
+inverted_index_simple_titles.pkl
+inverted_index.pkl
+**/recipes_data.csv
+**/inverted_index.txt
+**/recipes_with_labels.csv
+.venv
