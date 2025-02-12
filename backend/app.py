@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from search import tf_idf_search
 import pickle
 
@@ -13,6 +14,8 @@ with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 
 app = Flask(__name__)
+
+CORS(app, origins="http://localhost:5173")
 
 
 @app.route("/")
