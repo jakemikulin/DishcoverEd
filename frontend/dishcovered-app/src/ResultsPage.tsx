@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import dishcoveredLogo from './assets/dishcovered-logo-green.png';
+import Modal from './Modal';
 
 const sampleRecipes = [
   {
@@ -42,6 +43,24 @@ const sampleRecipes = [
   }
 ];
 
+const highlightText = (text: string, query: string) => {
+  return text
+  if (!query) return text;
+
+  // Convert query into an array of words, escaping special regex characters
+  const queryWords = query.split(/\s+/).map(word => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+
+  if (queryWords.length === 0) return text;
+
+  // Create a regex to match any of the query words
+  const regex = new RegExp(`(${queryWords.join("|")})`, "gi");
+
+  // Split the text into parts and render them
+  return text.split(regex).map((part, idx) =>
+    regex.test(part) ? <strong key={idx}>{part}</strong> : part
+  );
+};
+
 function ResultsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
@@ -49,6 +68,11 @@ function ResultsPage() {
   const [searchTerm, setSearchTerm] = useState(query);
   const navigate = useNavigate();
   const [searchTime, setSearchTime] = useState<number | null>(null);
+
+  // Modal state and filter data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<any>({});
+
 
   useEffect(() => {
     const startTime = performance.now(); // Start time
@@ -77,6 +101,53 @@ function ResultsPage() {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleApplyFilters = (filters: any) => {
+    setSelectedFilters(filters);
+    setIsModalOpen(false); // Close modal after applying filters
+  };
+
+  useEffect(() => {
+    const startTime = performance.now();
+
+    // Filter recipes based on search query and filters
+    let filteredRecipes = sampleRecipes.filter(recipe =>
+      recipe.title.toLowerCase().includes(query) || 
+      recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
+    );
+
+    // Apply additional filters to the recipe list
+    if (selectedFilters.tags) {
+      filteredRecipes = filteredRecipes.filter(recipe =>
+        recipe.tags.some(tag => selectedFilters.tags.includes(tag))
+      );
+    }
+
+    setRecipes(filteredRecipes);
+
+    const endTime = performance.now();
+    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
+  }, [query, selectedFilters]);
+
+
+  // State to track checked ingredients
+  const [checkedIngredients, setCheckedIngredients] = useState<{ [key: string]: boolean }>({});
+
+  // Handle toggle checkbox state
+  const handleCheckboxChange = (ingredient: string) => {
+    setCheckedIngredients((prev) => ({
+      ...prev,
+      [ingredient]: !prev[ingredient],
+    }));
   };
 
   return (
@@ -111,6 +182,7 @@ function ResultsPage() {
             )}
           </div>
           <button className="search-btn" onClick={handleSearch} style={{ flexShrink: 0 }}>🔍</button>
+          <button className="filter-btn" onClick={handleOpenModal}></button>
         </div>
 
       </header>
@@ -119,6 +191,12 @@ function ResultsPage() {
         <div className="results-info">
           <h2 className="results-text">Results for "{query}"</h2>
           {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
+
+        {/* Modal for filter */}
+        {isModalOpen && (
+          <Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
+        )}
+
         </div>
         <div className="recipe-list">
           {recipes.length > 0 ? (
@@ -132,21 +210,33 @@ function ResultsPage() {
                   </div>
                 </div>
                 <div className="recipe-body">
-                  <div className="recipe-ingredients">
+                  <div className="recipe-ingredients recipe-section scrollable-container">
                     <h3>Ingredients</h3>
-                    <ul>{recipe.ingredients.map((item, idx) => <li key={idx}>{item}</li>)}</ul>
+                    <ul>
+                      {recipe.ingredients.map((ingredient, idx) => (
+                        <li key={idx} style={{ display: 'flex', alignItems: 'center' }}>
+                          <input
+                            type="checkbox"
+                            checked={checkedIngredients[ingredient] || false}
+                            onChange={() => handleCheckboxChange(ingredient)}
+                            style={{ marginRight: '10px' }}
+                          />
+                          {highlightText(ingredient, query)}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="recipe-instructions">
+                  <div className="recipe-instructions recipe-section scrollable-container">
                     <h3>Instructions</h3>
                     <ol>{recipe.instructions.map((step, idx) => <li key={idx}>{step}</li>)}</ol>
                   </div>
-                  <div className="recipe-nutrition">
+                  <div className="recipe-nutrition recipe-section">
                     <h3>Nutritional Information</h3>
                     <p>Calories: {recipe.nutrition.calories}</p>
                     <p>Fiber: {recipe.nutrition.fiber}</p>
                     <p>Protein: {recipe.nutrition.protein}</p>
                   </div>
-                  <div className="recipe-time">
+                  <div className="recipe-time recipe-section">
                     <h3>Time</h3>
                     <p><strong>Prep Time:</strong> {recipe.times.prep} minutes</p>
                     <p><strong>Cook Time:</strong> {recipe.times.cook} minutes</p>

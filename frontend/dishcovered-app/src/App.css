@@ -180,7 +180,7 @@
   margin: 0;
 }
 
-.recipe-author {
+.recipe-cuisine {
   color: #bbb;
   font-size: 0.9rem;
 }
@@ -229,3 +229,88 @@
 .recipe-time p {
   margin: 5px 0;
 }
+
+.recipe-body {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.recipe-section {
+  flex: 1;
+  background: #222;
+  padding: 15px;
+  border: 2px solid #1e431f;  /* Square green border */
+  border-radius: 15px;  /* Optional: Adds rounded corners if you want */
+  margin-bottom: 15px; /* Adds space between sections */
+}
+
+.recipe-section h3 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.recipe-section ul,
+.recipe-section ol {
+  padding-left: 20px;
+}
+
+.recipe-nutrition,
+.recipe-time {
+  flex: 1;
+}
+
+.recipe-time p {
+  margin: 5px 0;
+}
+
+
+.recipe-ingredients, .recipe-instructions {
+  text-align: left;  /* Align text to the right */
+}
+
+.recipe-ingredients ul, .recipe-instructions ol {
+  text-align: left;  /* Ensure lists are aligned to the right */
+  padding-right: 20px;  /* Adjust padding if needed */
+}
+
+.recipe-instructions li, .recipe-ingredients li {
+  text-align: left;  /* Align list items to the right */
+}
+
+.scrollable-container {
+  max-height: 300px; /* Adjust this value to your preferred height */
+  overflow-y: auto; /* Enables scrolling if the content exceeds max-height */
+}
+
+/* Shared styles for the filter button */
+.filter-btn {
+  background-color: #353535; /* Light background color */
+  border: 1px solid #1f1f1f;    /* Subtle border */
+  padding: 10px;              /* Padding around icon */
+  border-radius: 5px;         /* Rounded corners */
+  height: 45px;               /* Height of the button */
+  width: 45px;                /* Width of the button */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  background-image: url('./assets/filter.png'); /* Add the filter icon image */
+  background-size: 35px 35px; /* Adjust the icon size */
+  background-repeat: no-repeat;
+  background-position: center; /* Position the icon */
+  padding-left: 30px; /* Space for the icon */
+}
+
+
+.filter-btn img {
+  width: 20px;  /* Set the size of the filter icon */
+  height: 20px;
+}
+
+.filter-btn:hover {
+  background-color: #505050;  /* Slightly darker background on hover */
+}
+
+
