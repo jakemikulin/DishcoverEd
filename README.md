@@ -10,3 +10,14 @@ For too long, people have been fruitlessly searching for recipes, only to have t
 - [Nikita Rameshkumar](https://github.com/nikita-ramesh) (Backend)
 - [Mani Kher](https://github.com/manixkher) (Backend)
 - [Aadarsh Sundar](https://github.com/AadarshSu) (Backend)
+
+## Commands to Run [TEST]
+
+Terminal 1
+cd backend
+python init_data.py
+python app.py
+
+Terminal 2
+cd frontend/dishcovered-app
+npm run dev
