@@ -10,12 +10,19 @@ def load_indices():
     # build_simple_inverted_index_titles(df)
 
 
-def tf_idf_search(query, cuisines={'southern_us', 'brazilian', 'russian', 'chinese',
-                                  'italian', 'mexican', 'french', 'korean',
+def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
+                                  'italian', 'mexican', 'french',
                                   'british', 'cajun_creole', 'filipino',
-                                  'indian', 'irish', 'moroccan', 'thai',
-                                  'jamaican', 'spanish', 'japanese', 'vietnamese',
-                                  'greek'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None):
+                                  'indian', 'irish', 'moroccan',
+                                  'jamaican', 'spanish', 'japanese',
+                                  'greek', 'vietnamese', 'korean',
+                                  'brazilian', 'thai'},
+                    categories={'', 'Additive', 'Bakery', # Should the empty string be included?
+                                'Beverage', 'Beverage Alcoholic', 'Dairy',
+                                'Essential Oil', 'Fish', 'Flower', 'Fruit',
+                                'Fungus', 'Herb', 'Legume', 'Maize', 'Meat',
+                                'Nuts & Seed', 'Plant', 'Seafood', 'Spice',
+                                'Vegetable'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None, return_all=False):
     """
     Perform a TF-IDF search over documents using the inverted index.
 
@@ -79,6 +86,13 @@ def tf_idf_search(query, cuisines={'southern_us', 'brazilian', 'russian', 'chine
         
         for doc_id, positions in postings.items():
             if recipes_dict[doc_id]['cuisine'] in cuisines:
+                valid_category = False
+                for catetory in recipes_dict[doc_id]['categories']:
+                    if catetory in categories:
+                        valid_category = True
+                        break
+                if not valid_category:
+                    continue
                 # Term frequency is the number of occurrences (length of positions list).
                 tf = len(positions) / (len(recipes_dict[doc_id]['NER']))
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.
@@ -88,6 +102,13 @@ def tf_idf_search(query, cuisines={'southern_us', 'brazilian', 'russian', 'chine
 
         for doc_id, positions in title_postings.items():
             if recipes_dict[doc_id]['cuisine'] in cuisines:
+                valid_category = False
+                for catetory in recipes_dict[doc_id]['categories']:
+                    if catetory in categories:
+                        valid_category = True
+                        break
+                if not valid_category:
+                    continue
                 # Term frequency is the number of occurrences (length of positions list).
                 tf = len(positions) / (len(recipes_dict[doc_id]['title']))
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.
@@ -98,6 +119,10 @@ def tf_idf_search(query, cuisines={'southern_us', 'brazilian', 'russian', 'chine
     # Sort the documents by their score in descending order.
     ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
+    print("Number of results:", len(ranked_results))
+
+    if return_all:
+        return ranked_results
     # Return the top_k results.
     return ranked_results[:top_k]
 
