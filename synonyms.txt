@@ -1,0 +1,97 @@
+1. Cooking Methods
+
+    Bake → Roast, Cook, Dry-heat cook
+    Boil → Simmer, Poach, Blanch, Scald, Parboil
+    Broil → Grill, Sear, Char, Flame-cook
+    Fry → Sauté, Pan-fry, Stir-fry, Deep-fry, Shallow-fry
+    Sauté → Fry, Pan-fry, Flash-fry
+    Grill → Barbecue, Charbroil, Sear, Flame-cook
+    Roast → Bake, Broil, Brown, Oven-cook
+    Steam → Poach, Blanch, Moist-heat cook
+    Braise → Stew, Simmer, Slow-cook
+    Stew → Braise, Simmer, Slow-cook
+    Sear → Brown, Char, Flash-fry
+    Caramelize → Brown, Glaze, Candy
+    Poach → Simmer, Scald, Soft-boil
+
+2. Preparation Techniques
+
+    Chop → Cut, Dice, Mince, Cube
+    Dice → Cube, Chop finely, Mince
+    Mince → Grind, Chop finely, Pulverize
+    Julienne → Shred, Matchstick cut, Fine-strip
+    Slice → Cut, Sliver, Carve
+    Shred → Grate, Tear, Julienne
+    Grate → Shred, Rasp, Zest
+    Mash → Crush, Pulverize, Pulp, Pound
+    Crush → Smash, Pulverize, Pound
+    Puree → Blend, Mash, Liquefy
+    Peel → Pare, Skin, Remove rind
+    Core → Pit, Seed, Hollow out
+    Zest → Grate, Scrape, Rasp
+    Whisk → Beat, Stir, Blend
+    Knead → Work, Fold, Mix, Massage
+    Fold → Blend, Mix gently, Combine
+    Blend → Mix, Combine, Stir, Whisk
+    Stir → Mix, Fold, Blend, Whisk
+    Marinate → Soak, Brine, Cure
+    Season → Flavour, Spice, Garnish
+
+3. Texture Descriptions
+
+    Crunchy → Crispy, Brittle, Crackly
+    Tender → Soft, Juicy, Succulent
+    Chewy → Tough, Gummy, Stringy
+    Moist → Juicy, Damp, Succulent
+    Crispy → Crunchy, Crackly, Flaky
+    Fluffy → Airy, Light, Soft
+    Gooey → Sticky, Viscous, Syrupy
+    Grainy → Coarse, Gritty, Textured
+    Velvety → Smooth, Creamy, Silky
+    Firm → Dense, Compact, Solid
+    Runny → Liquid, Watery, Thin
+    Lumpy → Chunky, Bumpy, Uneven
+    Silky → Smooth, Velvety, Glossy
+
+4. Taste Descriptions
+
+    Sweet → Sugary, Honeyed, Saccharine
+    Savory → Umami, Flavoured, Seasoned
+    Salty → Briny, Saline, Piquant
+    Sour → Tangy, Tart, Acidic
+    Bitter → Sharp, Astringent, Harsh
+    Spicy → Hot, Pungent, Zesty
+    Mild → Subtle, Gentle, Light
+    Rich → Robust, Heavy, Intense
+    Smoky → Charred, Burnt, Woody
+    Buttery → Creamy, Silky, Lush
+    Fruity → Citrusy, Tart, Zesty
+    Zesty → Tangy, Spiced, Piquant
+    Herbaceous → Fresh, Fragrant, Aromatic
+    Umami → Savory, Meaty, Brothy
+
+5. Food States & Doneness
+
+    Raw → Uncooked, Fresh, Unprocessed
+    Rare → Lightly cooked, Underdone, Bloody
+    Medium-rare → Slightly cooked, Pink, Warm center
+    Medium → Half-cooked, Slightly firm, Moderate
+    Medium-well → Mostly cooked, Slightly pink, Firm
+    Well-done → Fully cooked, Browned, No pink
+    Burnt → Charred, Overcooked, Blackened
+    Crisped → Crunchy, Seared, Golden brown
+    Scorched → Burned, Blackened, Overheated
+
+6. Cooking Utensils & Tools
+
+    Knife → Blade, Cutter, Cleaver
+    Pan → Skillet, Frying pan, Sauté pan
+    Pot → Saucepan, Stockpot, Casserole
+    Whisk → Beater, Frother, Blender
+    Spatula → Turner, Scraper, Flipper
+    Ladle → Scoop, Spoon, Dipper
+    Tongs → Clamps, Pincers, Grabbers
+    Grater → Rasp, Zester, Shredder
+    Peeler → Parer, Skinner, Scraper
+    Colander → Strainer, Sieve, Drainer
+    Rolling pin → Roller, Dough roller, Pastry pin
