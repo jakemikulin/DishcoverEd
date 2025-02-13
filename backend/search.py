@@ -100,7 +100,7 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                 # if not valid_category:
                 #     continue
                 # Term frequency is the number of occurrences (length of positions list).
-                tf = len(positions) / (len(recipes_dict[doc_id]['NER']))
+                tf = len(positions) / math.log(1 + len(recipes_dict[doc_id]['NER']))
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.
                 scores[doc_id] += tf * idf
             else:
@@ -116,9 +116,11 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                 # if not valid_category:
                 #     continue
                 # Term frequency is the number of occurrences (length of positions list).
-                tf = len(positions) / (len(recipes_dict[doc_id]['title']))
+                # tf = len(positions) / (len(recipes_dict[doc_id]['title']))
+                tf = len(positions) / math.log(1 + len(recipes_dict[doc_id]['title']))
+
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.
-                scores[doc_id] += tf * idf/2
+                scores[doc_id] += tf * idf
             else:
                 continue
 
