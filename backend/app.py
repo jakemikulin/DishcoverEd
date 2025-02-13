@@ -14,7 +14,7 @@ with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+cors = CORS(app, origins="*")
 # CORS(app, origins="http://localhost:5173")
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -33,7 +33,7 @@ def search():
         # can change top k later.
     if not type or type == 'ingredients':
         print("Ingredient query")
-        tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index)
+        tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])

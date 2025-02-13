@@ -9,6 +9,22 @@ def load_indices():
     # build_simple_inverted_index(df)
     # build_simple_inverted_index_titles(df)
 
+def get_synonyms(word, word_vectors, top_n=3):
+    """Retrieve top N similar words using Word2Vec/FastText."""
+    try:
+        similar_words = word_vectors.most_similar(word, topn=top_n)
+        return [w for w, _ in similar_words]
+    except KeyError:
+        return []  # Return empty if word is not in the model
+
+def expand_token(token, idf,word_vectors, top_n=3, idf_threshold=2.0):
+
+    if idf >= idf_threshold:
+        expanded_tokens = [preprocess(exp) for exp in get_synonyms(token)]
+    expanded_tokens.append(token)
+    return set(expanded_tokens)
+        
+        
 
 def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
@@ -22,7 +38,7 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                                 'Essential Oil', 'Fish', 'Flower', 'Fruit',
                                 'Fungus', 'Herb', 'Legume', 'Maize', 'Meat',
                                 'Nuts & Seed', 'Plant', 'Seafood', 'Spice',
-                                'Vegetable'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None, return_all=False):
+                                'Vegetable'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None, return_all=False, inverted_index_titles = None, recipes_dict = None ):
     """
     Perform a TF-IDF search over documents using the inverted index.
 
@@ -34,16 +50,6 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
     Returns:
       List of tuples (doc_id, score) sorted by descending score.
     """
-    if inverted_index == None:
-    # Load the inverted index from the pickle file.
-        with open(inverted_index_file, 'rb') as f:
-            inverted_index = pickle.load(f)
-
-    with open('inverted_index_simple_titles.pkl', 'rb') as f:
-        inverted_index_titles = pickle.load(f)
-    
-    with open('recipes_dict.pkl', 'rb') as f: # does this need to be preprocessed?
-        recipes_dict = pickle.load(f)
 
     # Preprocess the query to obtain tokens.
     # Make sure your `preprocess` function is defined/imported.
