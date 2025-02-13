@@ -1,0 +1,272 @@
+1. Cooking Methods
+
+    Bake → Roast, Cook, Dry-heat cook
+    Boil → Simmer, Poach, Blanch, Scald, Parboil
+    Broil → Grill, Sear, Char, Flame-cook
+    Fry → Sauté, Pan-fry, Stir-fry, Deep-fry, Shallow-fry
+    Sauté → Fry, Pan-fry, Flash-fry
+    Grill → Barbecue, Charbroil, Sear, Flame-cook
+    Roast → Bake, Broil, Brown, Oven-cook
+    Steam → Poach, Blanch, Moist-heat cook
+    Braise → Stew, Simmer, Slow-cook
+    Stew → Braise, Simmer, Slow-cook
+    Sear → Brown, Char, Flash-fry
+    Caramelize → Brown, Glaze, Candy
+    Poach → Simmer, Scald, Soft-boil
+
+2. Preparation Techniques
+
+    Chop → Cut, Dice, Mince, Cube
+    Dice → Cube, Chop finely, Mince
+    Mince → Grind, Chop finely, Pulverize
+    Julienne → Shred, Matchstick cut, Fine-strip
+    Slice → Cut, Sliver, Carve
+    Shred → Grate, Tear, Julienne
+    Grate → Shred, Rasp, Zest
+    Mash → Crush, Pulverize, Pulp, Pound
+    Crush → Smash, Pulverize, Pound
+    Puree → Blend, Mash, Liquefy
+    Peel → Pare, Skin, Remove rind
+    Core → Pit, Seed, Hollow out
+    Zest → Grate, Scrape, Rasp
+    Whisk → Beat, Stir, Blend
+    Knead → Work, Fold, Mix, Massage
+    Fold → Blend, Mix gently, Combine
+    Blend → Mix, Combine, Stir, Whisk
+    Stir → Mix, Fold, Blend, Whisk
+    Marinate → Soak, Brine, Cure
+    Season → Flavour, Spice, Garnish
+
+3. Texture Descriptions
+
+    Crunchy → Crispy, Brittle, Crackly
+    Tender → Soft, Juicy, Succulent
+    Chewy → Tough, Gummy, Stringy
+    Moist → Juicy, Damp, Succulent
+    Crispy → Crunchy, Crackly, Flaky
+    Fluffy → Airy, Light, Soft
+    Gooey → Sticky, Viscous, Syrupy
+    Grainy → Coarse, Gritty, Textured
+    Velvety → Smooth, Creamy, Silky
+    Firm → Dense, Compact, Solid
+    Runny → Liquid, Watery, Thin
+    Lumpy → Chunky, Bumpy, Uneven
+    Silky → Smooth, Velvety, Glossy
+
+4. Taste Descriptions
+
+    Sweet → Sugary, Honeyed, Saccharine
+    Savory → Umami, Flavoured, Seasoned
+    Salty → Briny, Saline, Piquant
+    Sour → Tangy, Tart, Acidic
+    Bitter → Sharp, Astringent, Harsh
+    Spicy → Hot, Pungent, Zesty
+    Mild → Subtle, Gentle, Light
+    Rich → Robust, Heavy, Intense
+    Smoky → Charred, Burnt, Woody
+    Buttery → Creamy, Silky, Lush
+    Fruity → Citrusy, Tart, Zesty
+    Zesty → Tangy, Spiced, Piquant
+    Herbaceous → Fresh, Fragrant, Aromatic
+    Umami → Savory, Meaty, Brothy
+
+5. Food States & Doneness
+
+    Raw → Uncooked, Fresh, Unprocessed
+    Rare → Lightly cooked, Underdone, Bloody
+    Medium-rare → Slightly cooked, Pink, Warm center
+    Medium → Half-cooked, Slightly firm, Moderate
+    Medium-well → Mostly cooked, Slightly pink, Firm
+    Well-done → Fully cooked, Browned, No pink
+    Burnt → Charred, Overcooked, Blackened
+    Crisped → Crunchy, Seared, Golden brown
+    Scorched → Burned, Blackened, Overheated
+
+6. Cooking Utensils & Tools
+
+    Knife → Blade, Cutter, Cleaver
+    Pan → Skillet, Frying pan, Sauté pan
+    Pot → Saucepan, Stockpot, Casserole
+    Whisk → Beater, Frother, Blender
+    Spatula → Turner, Scraper, Flipper
+    Ladle → Scoop, Spoon, Dipper
+    Tongs → Clamps, Pincers, Grabbers
+    Grater → Rasp, Zester, Shredder
+    Peeler → Parer, Skinner, Scraper
+    Colander → Strainer, Sieve, Drainer
+    Rolling pin → Roller, Dough roller, Pastry pin
+
+7. Ingredient Synonyms
+
+    Eggplant → Aubergine, Brinjal
+    Coriander → Cilantro, Chinese parsley
+    Zucchini → Courgette, Summer squash
+    Chickpeas → Garbanzo beans, Bengal gram
+    Bell pepper → Capsicum, Sweet pepper
+    Beetroot → Beet, Red beet
+    Green onion → Scallion, Spring onion
+    Arugula → Rocket, Rucola
+    Yam → Sweet potato, Dioscorea
+    Corn → Maize, Sweetcorn
+    Pumpkin → Squash, Winter squash
+    Okra → Lady's finger, Bhindi
+    Mushroom → Fungus, Toadstool
+    Carrot → Orange root, Daucus carota
+    Coconut → Cocos nucifera, Copra
+    Cucumber → Gherkin, Pickling cucumber
+    Tamarind → Imli, Indian date
+    Tofu → Bean curd, Soy curd
+    Turmeric → Curcuma, Indian saffron
+    Ginger → Zingiber, Adrak
+    Mustard greens → Leaf mustard, Brassica juncea
+    Banana → Plantain, Cavendish banana
+    Apple → Malus, Orchard apple
+    Grape → Vine fruit, Currant
+    Orange → Citrus sinensis, Mandarin
+    Lemon → Citrus limon, Limón
+    Lime → Citrus aurantiifolia, Key lime
+    Mango → King of fruits, Aam
+    Pineapple → Ananas, Bromeliad fruit
+    Strawberry → Fragaria, Garden strawberry
+    Blueberry → Vaccinium
+    Cherry → Prunus, Stone fruit
+    Peach → Prunus persica
+    Plum → Prunus domestica, Stone fruit
+    Pear → Pyrus, Bartlett pear
+    Watermelon → Citrullus, Melon
+    Papaya → Pawpaw, Carica papaya
+    Coconut → Cocos nucifera, Copra
+    Fig → Ficus, Anjeer
+    Pomegranate → Punica, Anaar
+
+1. Vegetables
+
+    Zucchini → Courgette
+    Eggplant → Aubergine
+    Cilantro → Coriander (leaves)
+    Scallion → Spring onion, Green onion
+    Bell pepper → Capsicum, Sweet pepper
+    Beet → Beetroot
+    Arugula → Rocket
+    Chickpeas → Garbanzo beans
+    Garbanzo beans → Chickpeas
+    Snap peas → Sugar snap peas
+    Snow peas → Mangetout
+    Rutabaga → Swede
+    Turnip greens → Turnip tops
+    Fava beans → Broad beans
+    Celeriac → Celery root
+    Okra → Lady’s fingers
+    Endive → Chicory
+    String beans → Green beans, French beans
+
+2. Fruits
+
+    Cantaloupe → Rockmelon
+    Honeydew melon → White melon
+    Prunes → Dried plums
+    Raisins → Dried grapes
+    Sultanas → Golden raisins
+    Currants → Dried black Corinth grapes
+    Persimmon → Sharon fruit
+    Passionfruit → Maracuja
+    Dragon fruit → Pitaya
+    Pawpaw → Papaya
+    Tangerine → Mandarin, Clementine
+    Blackcurrants → Cassis
+    Limequat → Hybrid citrus
+
+3. Meat & Seafood
+
+    Ground beef → Minced beef
+    Ground pork → Minced pork
+    Shrimp → Prawn
+    Crawfish → Crayfish
+    Monkfish → Anglerfish
+    Scallops → Coquilles Saint-Jacques (French)
+    Squid → Calamari
+    Mahi-mahi → Dolphinfish
+    Chilean sea bass → Patagonian toothfish
+    Swordfish → Broadbill
+    Sardines → Pilchards
+
+4. Dairy & Dairy Substitutes
+
+    Heavy cream → Double cream
+    Half-and-half → Single cream
+    Whole milk → Full-fat milk
+    Skim milk → Fat-free milk, Semi-skimmed milk
+    Yogurt → Curd (in some cultures)
+    Cottage cheese → Curds
+    Quark → Soft cheese
+    Ricotta → Whey cheese
+    Mascarpone → Italian cream cheese
+    Crème fraîche → Sour cream (though not identical)
+    Buttermilk → Cultured milk
+
+5. Grains & Starches
+
+    Cornstarch → Cornflour
+    Cornmeal → Polenta (when cooked)
+    Oatmeal → Porridge oats
+    Brown rice → Wholegrain rice
+    Wild rice → Water oats
+    Chickpea flour → Gram flour, Besan
+    Tapioca pearls → Boba (when in bubble tea)
+    Tapioca starch → Cassava starch
+
+6. Breads & Baked Goods
+
+    Cookies → Biscuits (UK)
+    Biscuits → Scones (UK)
+    Rolls → Baps, Buns
+    French bread → Baguette
+    Ciabatta → Italian bread
+    Naan → Flatbread
+    Matzo → Unleavened bread
+
+7. Spices & Seasonings
+
+    Allspice → Pimento
+    Baking soda → Bicarbonate of soda
+    Corn syrup → Glucose syrup
+    Powdered sugar → Icing sugar
+    Molasses → Treacle
+    Turbinado sugar → Raw sugar
+    Cinnamon sticks → Quills
+    Star anise → Chinese anise
+    Fenugreek → Methi
+    Nigella seeds → Black cumin, Kalonji
+    Mustard seeds → Rai
+    Caraway → Persian cumin
+    Asafoetida → Hing
+    Black salt → Kala namak
+    MSG → Monosodium glutamate, Umami powder
+
+8. Nuts & Seeds
+
+    Peanuts → Groundnuts
+    Pecans → Hickory nuts
+    Walnuts → English walnuts, Persian walnuts
+    Macadamia nuts → Queensland nuts
+    Pine nuts → Pignoli
+    Sunflower seeds → Helianthus seeds
+    Flaxseeds → Linseeds
+    Sesame seeds → Benne seeds
+
+9. Oils & Fats
+
+    Vegetable oil → Cooking oil
+    Rapeseed oil → Canola oil
+    Lard → Pork fat
+    Ghee → Clarified butter
+    Margarine → Butter substitute
+
+10. Legumes & Pulses
+
+    Kidney beans → Red beans
+    Black beans → Turtle beans
+    Pinto beans → Speckled beans
+    Lentils → Daal (Indian)
+    Soybeans → Edamame (when young)
+    Mung beans → Green gram

@@ -86,13 +86,13 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
         
         for doc_id, positions in postings.items():
             if recipes_dict[doc_id]['cuisine'] in cuisines:
-                valid_category = False
-                for catetory in recipes_dict[doc_id]['categories']:
-                    if catetory in categories:
-                        valid_category = True
-                        break
-                if not valid_category:
-                    continue
+                # valid_category = False
+                # for catetory in recipes_dict[doc_id]['categories']:
+                #     if catetory in categories:
+                #         valid_category = True
+                #         break
+                # if not valid_category:
+                #     continue
                 # Term frequency is the number of occurrences (length of positions list).
                 tf = len(positions) / (len(recipes_dict[doc_id]['NER']))
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.
@@ -102,13 +102,13 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
 
         for doc_id, positions in title_postings.items():
             if recipes_dict[doc_id]['cuisine'] in cuisines:
-                valid_category = False
-                for catetory in recipes_dict[doc_id]['categories']:
-                    if catetory in categories:
-                        valid_category = True
-                        break
-                if not valid_category:
-                    continue
+                # valid_category = False
+                # for catetory in recipes_dict[doc_id]['categories']:
+                #     if catetory in categories:
+                #         valid_category = True
+                #         break
+                # if not valid_category:
+                #     continue
                 # Term frequency is the number of occurrences (length of positions list).
                 tf = len(positions) / (len(recipes_dict[doc_id]['title']))
                 # Add the tf-idf score; if the term appears multiple times, its contributions add up.

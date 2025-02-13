@@ -4,45 +4,6 @@ import { Link } from 'react-router-dom';
 import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 import Modal from './Modal';
 
-const sampleRecipes = [
-  {
-    title: 'Vegan Apple Cinnamon Oatmeal',
-    author: 'Freshman Latsmalane',
-    ingredients: ['1 cup oats', '1 cup oat milk', '1 tsp cinnamon', '1/2 apple, chopped', '1 tbsp chopped pecans', '1 tbsp maple syrup'],
-    instructions: ['Boil oat milk in a saucepan.', 'Add oats and stir for 3-5 minutes.', 'Mix in cinnamon, apples, and pecans.', 'Drizzle with maple syrup before serving.'],
-    nutrition: { calories: 210, fiber: '3.4g', protein: '5g' },
-    times: { prep: 5, cook: 10, total: 15 },
-    tags: ['Vegan', 'Gluten Free', 'Breakfast'],
-  },
-  {
-    title: 'Some Other Cool Oatmeal',
-    author: 'FirstName LastName',
-    ingredients: ['1 cup rolled oats', '1 large apple', '1/2 tsp ground cinnamon', 'Pinch of Ground Nutmeg', '1/4 cup chopped pecans'],
-    instructions: ['Heat coconut oil in a medium-sized saucepan over medium heat.', 'Add in the apples and sauté for 2-3 minutes. Stir in the cinnamon and nutmeg.'],
-    nutrition: { calories: 80, fiber: '1.8g', protein: '3.4g' },
-    times: { prep: 5, cook: 10, total: 15 },
-    tags: ['Vegan', 'Gluten Free', 'Breakfast'],
-  },
-  {
-    title: 'Blueberry Almond Overnight Oats',
-    author: 'Chef HealthyBites',
-    ingredients: ['1/2 cup rolled oats', '1/2 cup almond milk', '1/4 cup fresh blueberries', '1 tbsp chia seeds', '1 tbsp honey', '1 tbsp sliced almonds'],
-    instructions: ['In a jar, combine oats, almond milk, and chia seeds. Stir well.', 'Add honey and mix to combine.', 'Top with fresh blueberries and sliced almonds.', 'Cover and refrigerate overnight.', 'Stir before eating and enjoy!'],
-    nutrition: { calories: 260, fiber: '6g', protein: '7g' },
-    times: { prep: 5, cook: 0, total: 5 },
-    tags: ['Vegetarian', 'Healthy', 'Breakfast'],
-  },
-  {
-    title: 'Spicy Chickpea Avocado Toast',
-    author: 'Foodie Fiesta',
-    ingredients: ['1 slice whole-grain bread', '1/2 ripe avocado', '1/4 cup canned chickpeas', '1/2 tsp red chili flakes', '1/4 tsp garlic powder', '1 tbsp lemon juice', 'Salt & pepper to taste'],
-    instructions: ['Toast the whole-grain bread until golden and crispy.', 'In a bowl, mash the avocado with lemon juice, salt, and pepper.', 'Mash chickpeas slightly and mix with garlic powder and red chili flakes.', 'Spread mashed avocado over the toast.', 'Top with spicy chickpea mixture and enjoy!'],
-    nutrition: { calories: 320, fiber: '8g', protein: '9g' },
-    times: { prep: 5, cook: 2, total: 7 },
-    tags: ['Vegan', 'Spicy', 'Lunch'],
-  }
-];
-
 const highlightText = (text: string, query: string) => {
   return text
   if (!query) return text;
@@ -64,31 +25,57 @@ const highlightText = (text: string, query: string) => {
 function ResultsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
-  const [recipes, setRecipes] = useState<typeof sampleRecipes>([]);
+  const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState(query);
   const navigate = useNavigate();
   const [searchTime, setSearchTime] = useState<number | null>(null);
 
-  // Modal state and filter data
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<any>({});
-
+  const parseStringArray = (str: string) => {
+    try {
+      return JSON.parse(str.replace(/'/g, '"')); // Convert to valid JSON format and parse
+    } catch (error) {
+      console.warn("Failed to parse string array:", str); // Debugging
+      return []; // Return empty array if parsing fails
+    }
+  };
 
   useEffect(() => {
-    const startTime = performance.now(); // Start time
+    if (!query) return;
+    const fetchRecipes = async () => {
+      const startTime = performance.now(); // Start time
+      
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(query)}`, 
+        {
+          method: 'GET', 
+          headers: {'Content-Type': 'application/json'}, 
+          mode: 'cors'},);
 
-    // Filter recipes based on search query logic here [PLACEHOLDER]
-    if (query) {
-      const filteredRecipes = sampleRecipes.filter(recipe =>
-        recipe.title.toLowerCase().includes(query) || 
-        recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
-      );
-      setRecipes(filteredRecipes);
-    }
+        const data = await response.json();
+        console.log(data);
 
-    const endTime = performance.now(); // End time
-    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
-    
+        if (Array.isArray(data)) {
+          // Transform API response to match frontend
+          const formattedRecipes = data.map(([recipe, score]) => ({
+            title: recipe.title,
+            ingredients: parseStringArray(recipe.ingredients),
+            instructions: parseStringArray(recipe.directions), 
+            link: recipe.link, 
+            cuisine: recipe.cuisine,
+            tags: parseStringArray(recipe.categories || []),
+          }));
+          setRecipes(formattedRecipes);
+        } else {
+          setRecipes([]);
+        }
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
+        setRecipes([]);
+      }
+      const endTime = performance.now(); // End time
+      setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
+    };
+    fetchRecipes();
   }, [query]);
 
   const handleSearch = () => {
@@ -103,6 +90,12 @@ function ResultsPage() {
     }
   };
 
+  // ----------------------- DYLAN'S CODE ---------------------------
+
+  // Modal state and filter data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<any>({});
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -116,27 +109,29 @@ function ResultsPage() {
     setIsModalOpen(false); // Close modal after applying filters
   };
 
-  useEffect(() => {
-    const startTime = performance.now();
+// DYLAN YOU NEED TO FIX SEARCH WITH FILTERS - LIASE WITH BACKEND AND MAYBE USE THE ABOVE USEEFFECT
 
-    // Filter recipes based on search query and filters
-    let filteredRecipes = sampleRecipes.filter(recipe =>
-      recipe.title.toLowerCase().includes(query) || 
-      recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
-    );
+  // useEffect(() => {
+  //   const startTime = performance.now();
 
-    // Apply additional filters to the recipe list
-    if (selectedFilters.tags) {
-      filteredRecipes = filteredRecipes.filter(recipe =>
-        recipe.tags.some(tag => selectedFilters.tags.includes(tag))
-      );
-    }
+  //   // Filter recipes based on search query and filters
+  //   let filteredRecipes = sampleRecipes.filter(recipe =>
+  //     recipe.title.toLowerCase().includes(query) || 
+  //     recipe.ingredients.some(ingredient => ingredient.toLowerCase().includes(query))
+  //   );
 
-    setRecipes(filteredRecipes);
+  //   // Apply additional filters to the recipe list
+  //   if (selectedFilters.tags) {
+  //     filteredRecipes = filteredRecipes.filter(recipe =>
+  //       recipe.tags.some(tag => selectedFilters.tags.includes(tag))
+  //     );
+  //   }
 
-    const endTime = performance.now();
-    setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
-  }, [query, selectedFilters]);
+  //   setRecipes(filteredRecipes);
+
+  //   const endTime = performance.now();
+  //   setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
+  // }, [query, selectedFilters]);
 
 
   // State to track checked ingredients
@@ -150,7 +145,9 @@ function ResultsPage() {
     }));
   };
 
-  return (
+// ----------------------- PAGE FORMATTING ---------------------------
+
+    return (
     <div className="page-container">
       <header className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px', height: '80px' }}>
         {/* Logo on the right*/}
@@ -191,12 +188,9 @@ function ResultsPage() {
         <div className="results-info">
           <h2 className="results-text">Results for "{query}"</h2>
           {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
-
-        {/* Modal for filter */}
-        {isModalOpen && (
-          <Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
+          {/* Modal for filter */}
+          {isModalOpen && (<Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
         )}
-
         </div>
         <div className="recipe-list">
           {recipes.length > 0 ? (
@@ -204,7 +198,7 @@ function ResultsPage() {
               <div key={index} className="recipe-card">
                 <div className="recipe-header">
                   <h2>{recipe.title}</h2>
-                  <p className="recipe-author">by {recipe.author}</p>
+                  <p className="recipe-cuisine"> {recipe.cuisine}</p>
                   <div className="recipe-tags">
                     {recipe.tags.map((tag, idx) => <span key={idx} className="recipe-tag">{tag}</span>)}
                   </div>
@@ -230,17 +224,8 @@ function ResultsPage() {
                     <h3>Instructions</h3>
                     <ol>{recipe.instructions.map((step, idx) => <li key={idx}>{step}</li>)}</ol>
                   </div>
-                  <div className="recipe-nutrition recipe-section">
-                    <h3>Nutritional Information</h3>
-                    <p>Calories: {recipe.nutrition.calories}</p>
-                    <p>Fiber: {recipe.nutrition.fiber}</p>
-                    <p>Protein: {recipe.nutrition.protein}</p>
-                  </div>
-                  <div className="recipe-time recipe-section">
-                    <h3>Time</h3>
-                    <p><strong>Prep Time:</strong> {recipe.times.prep} minutes</p>
-                    <p><strong>Cook Time:</strong> {recipe.times.cook} minutes</p>
-                    <p><strong>Total Time:</strong> {recipe.times.total} minutes</p>
+                  <div className="recipe-link">
+                    <a href={recipe.link} target="_blank" rel="noopener noreferrer">View Full Recipe</a>
                   </div>
                 </div>
               </div>
