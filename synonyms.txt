@@ -143,7 +143,7 @@
 
     Zucchini → Courgette
     Eggplant → Aubergine
-    Cilantro → Coriander (leaves)
+    Cilantro → Coriander
     Scallion → Spring onion, Green onion
     Bell pepper → Capsicum, Sweet pepper
     Beet → Beetroot
@@ -183,7 +183,7 @@
     Shrimp → Prawn
     Crawfish → Crayfish
     Monkfish → Anglerfish
-    Scallops → Coquilles Saint-Jacques (French)
+    Scallops → Coquilles Saint-Jacques
     Squid → Calamari
     Mahi-mahi → Dolphinfish
     Chilean sea bass → Patagonian toothfish
@@ -196,29 +196,28 @@
     Half-and-half → Single cream
     Whole milk → Full-fat milk
     Skim milk → Fat-free milk, Semi-skimmed milk
-    Yogurt → Curd (in some cultures)
+    Yogurt → Curd
     Cottage cheese → Curds
     Quark → Soft cheese
     Ricotta → Whey cheese
     Mascarpone → Italian cream cheese
-    Crème fraîche → Sour cream (though not identical)
+    Crème fraîche → Sour cream
     Buttermilk → Cultured milk
 
 5. Grains & Starches
 
     Cornstarch → Cornflour
-    Cornmeal → Polenta (when cooked)
+    Cornmeal → Polenta
     Oatmeal → Porridge oats
     Brown rice → Wholegrain rice
     Wild rice → Water oats
     Chickpea flour → Gram flour, Besan
-    Tapioca pearls → Boba (when in bubble tea)
+    Tapioca pearls → Boba
     Tapioca starch → Cassava starch
 
 6. Breads & Baked Goods
 
-    Cookies → Biscuits (UK)
-    Biscuits → Scones (UK)
+    Cookies → Biscuits
     Rolls → Baps, Buns
     French bread → Baguette
     Ciabatta → Italian bread
@@ -267,6 +266,6 @@
     Kidney beans → Red beans
     Black beans → Turtle beans
     Pinto beans → Speckled beans
-    Lentils → Daal (Indian)
-    Soybeans → Edamame (when young)
+    Lentils → Daal
+    Soybeans → Edamame
     Mung beans → Green gram
