@@ -5,6 +5,7 @@ import Stemmer
 import ast
 import pickle
 from collections import defaultdict
+from synonym_search import SYNONYM_MAP
 
 # Libary of functions that are useful for building the data to be searched through using the backend.
 
@@ -32,19 +33,31 @@ def save_recipes_as_dict_pkl(df, output_file="recipes_dict.pkl"):
     print(f"Saved recipes dictionary to {output_file}")
     return recipes_dict
 
+def normalize_text(text):
+    """Replace multi-word and hyphenated synonyms before tokenising."""
+    for synonym, canonical in SYNONYM_MAP.items():
+        text = re.sub(r'\b' + re.escape(synonym) + r'\b', canonical, text, flags=re.IGNORECASE)
+    return text
+
 def preprocess_title(text):
     try:
+        text = normalize_text(text)
         tokens = tokenise(text)
         preprocessed = stem(tokens)
-    except:
+    except Exception as e:
+        print(f"Error in preprocessing: {e}")
         preprocessed = []
 
     return preprocessed
 
 def preprocess(text):
-
-    tokens = tokenise_title(text)
-    preprocessed = stem(tokens)
+    try:
+        text = normalize_text(text)
+        tokens = tokenise_title(text)
+        preprocessed = stem(tokens)
+    except Exception as e:
+        print(f"Error in preprocessing: {e}")
+        preprocessed = []
 
     return preprocessed
 
