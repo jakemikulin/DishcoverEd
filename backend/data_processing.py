@@ -5,7 +5,7 @@ import Stemmer
 import ast
 import pickle
 from collections import defaultdict
-from synonym_search import SYNONYM_MAP
+from backend.load_synonyms import SYNONYM_MAP
 
 # Libary of functions that are useful for building the data to be searched through using the backend.
 
