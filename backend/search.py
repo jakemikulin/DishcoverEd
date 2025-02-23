@@ -39,99 +39,82 @@ def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                                 'Fungus', 'Herb', 'Legume', 'Maize', 'Meat',
                                 'Nuts & Seed', 'Plant', 'Seafood', 'Spice',
                                 'Vegetable'}, inverted_index_file='inverted_index_simple.pkl', top_k=100, inverted_index = None, return_all=False, inverted_index_titles = None, recipes_dict = None ):
-    """
-    Perform a TF-IDF search over documents using the inverted index.
-
-    Parameters:
-      query (str): The search query.
-      inverted_index_file (str): The path to the pickled inverted index.
-      top_k (int): Number of top documents to return.
-
-    Returns:
-      List of tuples (doc_id, score) sorted by descending score.
-    """
 
     # Preprocess the query to obtain tokens.
-    # Make sure your `preprocess` function is defined/imported.
+    # Make sure your preprocess function is defined/imported.
     query_tokens = preprocess(query)
-
     print("Query tokens:", query_tokens)
     
-    # Determine the total number of documents.
-    # Assuming that document IDs are positive integers starting from 1,
-    # we compute total_docs as the maximum doc_id found in the index.
+    # If not already provided, load the inverted index.
+    if inverted_index is None:
+        with open(inverted_index_file, 'rb') as f:
+            inverted_index = pickle.load(f)
     
-    # total_docs = 10000
+    # It is assumed that inverted_index_titles is already provided.
+    # Determine the total number of documents.
     total_docs = max(max(postings.keys()) for postings in inverted_index.values())
     print("Total documents:", total_docs)
     
+    # Prepare a set of required categories, filtering out empty strings.
+    required_categories = {cat for cat in categories if cat}
+    
     # A dictionary to accumulate TF-IDF scores for each document.
     scores = defaultdict(float)
-
+    
     # Process each token in the query.
     for token in query_tokens:
         print("\nToken:", token)
-        # Skip tokens not in the index.
         if token not in inverted_index and token not in inverted_index_titles:
             continue
 
-        # Get the posting list for the token: {doc_id: [positions]}.
-        postings = inverted_index[token]
-        title_postings = inverted_index_titles[token]
+        # Get postings; use .get() in case the token isn't in one of the indices.
+        postings = inverted_index.get(token, {})
+        title_postings = inverted_index_titles.get(token, {})
+        
         # Number of documents that contain the token.
         doc_freq = len(postings) + len(title_postings)
         if doc_freq == 0:
             continue
 
         print(f"Document frequency: {doc_freq}")
-
-        # Compute the inverse document frequency (IDF) for this term.
         idf = math.log(total_docs / doc_freq)
-
-        # For each document containing the token, add the TF-IDF contribution.
         
+        # Process regular postings.
         for doc_id, positions in postings.items():
-            if recipes_dict[doc_id]['cuisine'] in cuisines:
-                # valid_category = False
-                # for catetory in recipes_dict[doc_id]['categories']:
-                #     if catetory in categories:
-                #         valid_category = True
-                #         break
-                # if not valid_category:
-                #     continue
-                # Term frequency is the number of occurrences (length of positions list).
-                tf = len(positions) / math.log(1 + len(recipes_dict[doc_id]['NER']))
-                # Add the tf-idf score; if the term appears multiple times, its contributions add up.
-                scores[doc_id] += tf * idf
-            else:
+            recipe = recipes_dict.get(doc_id)
+            if recipe is None:
                 continue
-
+            # Check that the cuisine is allowed.
+            if recipe['cuisine'] not in cuisines:
+                continue
+            # Check that all required categories are present.
+            # Here, recipe['categories'] is assumed to be iterable (list, set, etc.).
+            recipe_categories = set(recipe.get('categories', []))
+            if not required_categories.issubset(recipe_categories):
+                continue
+            # Compute term frequency adjusted by document length.
+            tf = len(positions) / math.log(1 + len(recipe['NER']))
+            scores[doc_id] += tf * idf
+        
+        # Process title postings.
         for doc_id, positions in title_postings.items():
-            if recipes_dict[doc_id]['cuisine'] in cuisines:
-                # valid_category = False
-                # for catetory in recipes_dict[doc_id]['categories']:
-                #     if catetory in categories:
-                #         valid_category = True
-                #         break
-                # if not valid_category:
-                #     continue
-                # Term frequency is the number of occurrences (length of positions list).
-                # tf = len(positions) / (len(recipes_dict[doc_id]['title']))
-                tf = len(positions) / math.log(1 + len(recipes_dict[doc_id]['title']))
-
-                # Add the tf-idf score; if the term appears multiple times, its contributions add up.
-                scores[doc_id] += tf * idf
-            else:
+            recipe = recipes_dict.get(doc_id)
+            if recipe is None:
                 continue
+            if recipe['cuisine'] not in cuisines:
+                continue
+            recipe_categories = set(recipe.get('categories', []))
+            if not required_categories.issubset(recipe_categories):
+                continue
+            tf = len(positions) / math.log(1 + len(recipe['title']))
+            scores[doc_id] += tf * idf
 
-    # Sort the documents by their score in descending order.
+    # Sort the documents by their cumulative TF-IDF scores in descending order.
     ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-
     print("Number of results:", len(ranked_results))
-
+    
     if return_all:
         return ranked_results
-    # Return the top_k results.
     return ranked_results[:top_k]
 
 # Example usage:
