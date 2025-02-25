@@ -26,30 +26,22 @@ def home():
 @app.route("/api/search")
 def search():
     query = request.args.get("query")
-    type = request.args.get("type")
+    categories = request.args.getlist("categories")
     
     if not query:
-        return jsonify({"error": "Query paramater required."})
+        return jsonify({"error": "Query parameter required."})
         # can change top k later.
-    if not type or type == 'ingredients':
-        print("Ingredient query")
-        tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict)
+    try:
+        if not categories:
+            tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict)
+        else:
+            tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=categories)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])
-
         return jsonify(results)
-    
-    elif type == 'titles':
-        print("Title query")
-        tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index_titles)
-        results = []
-        for doc_id, score in tf_idf_results:
-            results.append([recipes_dict[doc_id],score])
-
-        return jsonify(results)
-
-    return jsonify({"error":"Invalid request"})
+    except:
+        return jsonify({"error":"Invalid request"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
