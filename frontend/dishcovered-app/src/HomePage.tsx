@@ -42,10 +42,7 @@ function HomePage() {
   };
 
   const handleFeelingHungryClick = async () => {
-    await fetch('/api/feeling-hungry', {
-      method: 'POST',
-    });
-    navigate('/search');
+    navigate('/search?query=feelinghungry');
   }; 
 
   return (
@@ -90,7 +87,7 @@ function HomePage() {
           onClick={handleFeelingHungryClick}
           style={{ padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', backgroundColor: '#f9a826', color: 'white', border: 'none', borderRadius: '5px' }}
         >
-          I'm feeling hungry!
+          I'm Feeling Hungry 🍴
         </button>
       </div>
 
