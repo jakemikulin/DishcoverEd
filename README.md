@@ -13,6 +13,9 @@ For too long, people have been fruitlessly searching for recipes, only to have t
 
 ## Commands to Run [TEST]
 
+Virtual Environment
+- .venv\Scripts\activate
+
 Terminal 1
 - cd backend 
 - python init_data.py

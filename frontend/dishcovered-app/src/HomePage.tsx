@@ -2,14 +2,19 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 import Modal from './Modal';
-
+import { useFilters } from './FilterContext';
 
 
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({});
+  const { filters, setFilters } = useFilters();
+
+  const defaultFilters = {
+    cuisines: {},
+    categories: {}
+  };
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -31,9 +36,12 @@ function HomePage() {
     setIsModalOpen(false);
   };
 
-  const handleApplyFilters = (filters) => {
-    setSelectedFilters(filters);
+  const handleApplyFilters = (filters: any) => {
+    setFilters(filters);
+    setIsModalOpen(false);
   };
+
+  
 
   return (
     <div className="App">
@@ -71,7 +79,11 @@ function HomePage() {
       </div>
 
       {isModalOpen && (
-        <Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
+        <Modal
+          filters={filters || defaultFilters}  // Pass filters, default to empty filters if undefined
+          onClose={handleCloseModal}
+          onApplyFilters={handleApplyFilters}
+        />
       )}
     </div>
   );
