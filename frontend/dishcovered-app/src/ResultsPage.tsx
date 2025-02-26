@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 import Modal from './Modal';
+import { useFilters } from './FilterContext';
 
 const highlightText = (text: string, query: string) => {
   return text
@@ -29,6 +30,12 @@ function ResultsPage() {
   const [searchTerm, setSearchTerm] = useState(query);
   const navigate = useNavigate();
   const [searchTime, setSearchTime] = useState<number | null>(null);
+  const { filters, setFilters } = useFilters();
+
+  const defaultFilters = {
+    cuisines: {},
+    categories: {}
+  };
 
   const parseStringArray = (str: string) => {
     try {
@@ -44,12 +51,29 @@ function ResultsPage() {
     const fetchRecipes = async () => {
       const startTime = performance.now(); // Start time
       
+      // Construct the filters to send with the request
+      const filterParams = new URLSearchParams();
+
+      if (filters.cuisines && Object.keys(filters.cuisines).length > 0) {
+        filterParams.append('cuisines', JSON.stringify(filters.cuisines));
+      }
+      if (filters.categories && Object.keys(filters.categories).length > 0) {
+        filterParams.append('categories', JSON.stringify(filters.categories));
+      }
+      
+      // try {
+      //   const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(query)}`, 
+      //   {
+      //     method: 'GET', 
+      //     headers: {'Content-Type': 'application/json'}, 
+      //     mode: 'cors'},);
+
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(query)}`, 
-        {
+        const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(query)}&${filterParams.toString()}`, {
           method: 'GET', 
-          headers: {'Content-Type': 'application/json'}, 
-          mode: 'cors'},);
+          headers: { 'Content-Type': 'application/json' }, 
+          mode: 'cors'
+        });
 
         const data = await response.json();
         console.log(data);
@@ -76,7 +100,7 @@ function ResultsPage() {
       setSearchTime(parseFloat(((endTime - startTime) / 1000).toFixed(8)));
     };
     fetchRecipes();
-  }, [query]);
+  }, [query, filters]);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -94,8 +118,6 @@ function ResultsPage() {
 
   // Modal state and filter data
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<any>({});
-
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -105,8 +127,8 @@ function ResultsPage() {
   };
 
   const handleApplyFilters = (filters: any) => {
-    setSelectedFilters(filters);
-    setIsModalOpen(false); // Close modal after applying filters
+    setFilters(filters);
+    setIsModalOpen(false);
   };
 
 // DYLAN YOU NEED TO FIX SEARCH WITH FILTERS - LIASE WITH BACKEND AND MAYBE USE THE ABOVE USEEFFECT
@@ -189,8 +211,13 @@ function ResultsPage() {
           <h2 className="results-text">Results for "{query}"</h2>
           {searchTime !== null && <span className="search-time">({searchTime} seconds)</span>}
           {/* Modal for filter */}
-          {isModalOpen && (<Modal onClose={handleCloseModal} onApplyFilters={handleApplyFilters} />
-        )}
+          {isModalOpen && (
+        <Modal
+          filters={filters || defaultFilters}  // Pass filters, default to empty filters if undefined
+          onClose={handleCloseModal}
+          onApplyFilters={handleApplyFilters}
+        />
+      )}
         </div>
         <div className="recipe-list">
           {recipes.length > 0 ? (

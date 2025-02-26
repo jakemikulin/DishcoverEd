@@ -5,7 +5,7 @@ import Stemmer
 import ast
 import pickle
 from collections import defaultdict
-from backend.load_synonyms import SYNONYM_MAP
+from load_synonyms import SYNONYM_MAP
 
 # Libary of functions that are useful for building the data to be searched through using the backend.
 
@@ -154,7 +154,7 @@ def format_inverted_index(inverted_index):
 
 
 def generate_inverted_index_incl_quantities():
-    dataset_file = 'recipes_with_labels.csv'
+    dataset_file = 'recipes_with_labels_5000.csv'
     df = load_dataset(dataset_file)
     inverted_index = build_inverted_index_with_ingredient_ids(df)
     formatted_index = format_inverted_index(inverted_index)
@@ -229,7 +229,7 @@ def format_inverted_index_simple(inverted_index):
     return '\n'.join(formatted_inverted_index)
 
 def generate_inverted_index_simple():
-    dataset_file = 'recipes_with_labels.csv'
+    dataset_file = 'recipes_with_labels_5000.csv'
     df = load_dataset(dataset_file)
     inverted_index = build_simple_inverted_index(df)
     formatted_index = format_inverted_index_simple(inverted_index)
@@ -245,7 +245,7 @@ def generate_inverted_index_simple():
 # 
 
 def generated_inverted_index_simple_titles():
-    dataset_file = 'recipes_with_labels.csv'
+    dataset_file = 'recipes_with_labels_5000.csv'
     df = load_dataset(dataset_file)
     inverted_index = build_simple_inverted_index_titles(df)
     formatted_index = format_inverted_index_simple(inverted_index)

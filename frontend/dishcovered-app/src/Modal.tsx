@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Modal.css';
 
 const cuisinesList = [
@@ -15,10 +15,15 @@ const categoriesList = [
   'Spice', 'Vegetable'
 ];
 
-
-function Modal({ onClose, onApplyFilters }) {
+function Modal({ filters, onClose, onApplyFilters }) {
   const [selectedCuisines, setSelectedCuisines] = useState({});
   const [selectedCategories, setSelectedCategories] = useState({});
+
+  // Initialize state with the filters passed as props
+  useEffect(() => {
+    setSelectedCuisines(filters.cuisines || {});
+    setSelectedCategories(filters.categories || {});
+  }, [filters]);
 
   // Handle toggle of cuisine
   const handleCuisineToggle = (cuisine) => {
