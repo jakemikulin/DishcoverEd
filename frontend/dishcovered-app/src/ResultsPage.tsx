@@ -225,7 +225,7 @@ function ResultsPage() {
               <div key={index} className="recipe-card">
                 <div className="recipe-header">
                     <h2>{recipe.title.replace(/\b\w/g, char => char.toUpperCase())}</h2>
-                  <p className="recipe-cuisine"> {recipe.cuisine}</p>
+                    <p className="recipe-cuisine">{recipe.cuisine.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}</p>
                   <div className="recipe-tags">
                     {recipe.tags.map((tag, idx) => <span key={idx} className="recipe-tag">{tag}</span>)}
                   </div>
