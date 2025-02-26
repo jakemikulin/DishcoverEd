@@ -41,7 +41,12 @@ function HomePage() {
     setIsModalOpen(false);
   };
 
-  
+  const handleFeelingHungryClick = async () => {
+    await fetch('/api/feeling-hungry', {
+      method: 'POST',
+    });
+    navigate('/search');
+  }; 
 
   return (
     <div className="App">
@@ -76,6 +81,17 @@ function HomePage() {
         {/* Search button is fully separate */}
         <button className="search-btn" onClick={handleSearch} style={{ flexShrink: 0 }}>🔍</button>
         <button className="filter-btn" onClick={handleOpenModal}></button>
+      </div>
+
+      {/* New "I'm feeling hungry" button */}
+      <div style={{ marginTop: '20px' }}>
+        <button 
+          className="feeling-hungry-btn" 
+          onClick={handleFeelingHungryClick}
+          style={{ padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', backgroundColor: '#f9a826', color: 'white', border: 'none', borderRadius: '5px' }}
+        >
+          I'm feeling hungry!
+        </button>
       </div>
 
       {isModalOpen && (

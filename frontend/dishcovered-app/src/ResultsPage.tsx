@@ -57,6 +57,7 @@ function ResultsPage() {
       if (filters.cuisines && Object.keys(filters.cuisines).length > 0) {
         filterParams.append('cuisines', JSON.stringify(filters.cuisines));
       }
+  
       if (filters.categories && Object.keys(filters.categories).length > 0) {
         filterParams.append('categories', JSON.stringify(filters.categories));
       }
