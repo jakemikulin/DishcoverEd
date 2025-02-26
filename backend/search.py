@@ -146,9 +146,9 @@ def tf_idf_search_fuzzy(query,
                 continue
             if recipe['cuisine'] not in cuisines:
                 continue
-            recipe_categories = set(recipe.get('categories', []))
-            if not required_categories.issubset(recipe_categories):
-                continue
+            # recipe_categories = set(recipe.get('categories', []))
+            # if not required_categories.issubset(recipe_categories):
+            #     continue
             tf = len(positions) / math.log(1 + len(recipe['NER']))
             scores[doc_id] += weight_factor * tf * idf
         
@@ -159,9 +159,9 @@ def tf_idf_search_fuzzy(query,
                 continue
             if recipe['cuisine'] not in cuisines:
                 continue
-            recipe_categories = set(recipe.get('categories', []))
-            if not required_categories.issubset(recipe_categories):
-                continue
+            # recipe_categories = set(recipe.get('categories', []))
+            # if not required_categories.issubset(recipe_categories):
+            #     continue
             tf = len(positions) / math.log(1 + len(recipe['title']))
             scores[doc_id] += weight_factor * tf * idf
 
