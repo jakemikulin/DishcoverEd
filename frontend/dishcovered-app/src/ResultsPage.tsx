@@ -224,7 +224,7 @@ function ResultsPage() {
             recipes.map((recipe, index) => (
               <div key={index} className="recipe-card">
                 <div className="recipe-header">
-                  <h2>{recipe.title}</h2>
+                    <h2>{recipe.title.replace(/\b\w/g, char => char.toUpperCase())}</h2>
                   <p className="recipe-cuisine"> {recipe.cuisine}</p>
                   <div className="recipe-tags">
                     {recipe.tags.map((tag, idx) => <span key={idx} className="recipe-tag">{tag}</span>)}
