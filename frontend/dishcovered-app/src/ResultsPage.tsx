@@ -226,6 +226,9 @@ function ResultsPage() {
               <div key={index} className="recipe-card">
                 <div className="recipe-header">
                     <h2>{recipe.title.replace(/\b\w/g, char => char.toUpperCase())}</h2>
+                    <div className="recipe-link">
+                    <a href={recipe.link.startsWith('http') ? recipe.link : `http://${recipe.link}`} target="_blank" rel="noopener noreferrer">View Full Recipe</a>
+                  </div>
                     <p className="recipe-cuisine">{recipe.cuisine.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}</p>
                   <div className="recipe-tags">
                     {recipe.tags.map((tag, idx) => <span key={idx} className="recipe-tag">{tag}</span>)}
@@ -251,9 +254,6 @@ function ResultsPage() {
                   <div className="recipe-instructions recipe-section scrollable-container">
                     <h3>Instructions</h3>
                     <ol>{recipe.instructions.map((step, idx) => <li key={idx}>{step}</li>)}</ol>
-                  </div>
-                  <div className="recipe-link">
-                    <a href={recipe.link} target="_blank" rel="noopener noreferrer">View Full Recipe</a>
                   </div>
                 </div>
               </div>
