@@ -28,8 +28,13 @@ def home():
 @app.route("/api/search")
 def search():
     query = request.args.get("query")
-    categories = request.args.getlist("categories")
+    categories = request.args.get("categories")
     cuisines = request.args.get("cuisines")
+
+    categories_dict = json.loads(categories) if categories else {}
+    selected_categories = {key for key, value in categories_dict.items() if value}
+    print(f"Selected categories: {selected_categories}")
+    print(f"Category Type: {type(selected_categories)}")
     
     cuisines_dict = json.loads(cuisines) if cuisines else {}
     selected_cuisines = [key.lower().replace(" ", "_") for key, value in cuisines_dict.items() if value]
@@ -42,6 +47,7 @@ def search():
                             'greek', 'vietnamese', 'korean',
                             'brazilian', 'thai']
     print(f"Selected cuisines: {selected_cuisines}")
+    print(f"Cuisine Type: {type(selected_cuisines)}")
 
 
     print(f"Query: {query}")
@@ -53,7 +59,7 @@ def search():
         # can change top k later.
     try:
         print(f"Selected cuisines in search: {selected_cuisines}")
-        tf_idf_results = tf_idf_search_fuzzy(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=categories, cuisines=selected_cuisines)
+        tf_idf_results = tf_idf_search_fuzzy(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=selected_categories, cuisines=selected_cuisines)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])
