@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from search import tf_idf_search
 import pickle
-
+import random
 
 with open('inverted_index_simple.pkl', 'rb') as f:
     inverted_index = pickle.load(f)
@@ -43,6 +43,12 @@ def search():
         return jsonify(results)
     except:
         return jsonify({"error":"Invalid request"}), 400
+
+@app.route("/api/feelinghungry")
+def imfeelinghungry():
+    total = len(recipes_dict)
+    random_recipe_index = random.randint(0, total)
+    return jsonify(recipes_dict[random_recipe_index])
 
 if __name__ == "__main__":
     app.run(debug=True)
