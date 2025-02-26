@@ -53,6 +53,10 @@ function Modal({ filters, onClose, onApplyFilters }) {
         <button className="close-btn" onClick={onClose}>X</button>
         <h2>Filters</h2>
         
+        <button className="apply-filters-btn" onClick={handleApplyFilters}>
+          Apply Filters
+        </button>
+        
         {/* Cuisines Section */}
         <h3>Cuisines</h3>
         <div className="cuisines-grid">
@@ -82,10 +86,6 @@ function Modal({ filters, onClose, onApplyFilters }) {
             </label>
           ))}
         </div>
-
-        <button className="apply-filters-btn" onClick={handleApplyFilters}>
-          Apply Filters
-        </button>
       </div>
     </div>
   );
