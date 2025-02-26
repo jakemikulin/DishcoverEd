@@ -27,6 +27,7 @@ def home():
 def search():
     query = request.args.get("query")
     categories = request.args.getlist("categories")
+    cuisines = request.args.getlist("cuisines")
     
     if not query:
         return jsonify({"error": "Query parameter required."})
@@ -35,7 +36,7 @@ def search():
         if not categories:
             tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict)
         else:
-            tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=categories)
+            tf_idf_results = tf_idf_search(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=categories, cuisines=cuisines)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])
