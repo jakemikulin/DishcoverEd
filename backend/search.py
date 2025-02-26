@@ -67,12 +67,7 @@ def tf_idf_search_fuzzy(query,
                             'jamaican', 'spanish', 'japanese',
                             'greek', 'vietnamese', 'korean',
                             'brazilian', 'thai'},
-                  categories={'', 'Additive', 'Bakery',  # Should the empty string be included?
-                              'Beverage', 'Beverage Alcoholic', 'Dairy',
-                              'Essential Oil', 'Fish', 'Flower', 'Fruit',
-                              'Fungus', 'Herb', 'Legume', 'Maize', 'Meat',
-                              'Nuts & Seed', 'Plant', 'Seafood', 'Spice',
-                              'Vegetable'},
+                  categories={},
                   inverted_index_file='inverted_index_simple.pkl',
                   top_k=100,
                   inverted_index=None,
@@ -142,13 +137,25 @@ def tf_idf_search_fuzzy(query,
         # Process postings from the regular index.
         for doc_id, positions in postings.items():
             recipe = recipes_dict.get(doc_id)
+            
             if recipe is None:
                 continue
             if recipe['cuisine'] not in cuisines:
                 continue
-            # recipe_categories = set(recipe.get('categories', []))
-            # if not required_categories.issubset(recipe_categories):
-            #     continue
+            recipe_categories = recipe['categories']
+            required_categories_list = list(required_categories)
+
+            if '' not in recipe_categories:
+                recipe_categories.append('')
+
+            # print("Recipe categories:", recipe_categories)
+            # print("Required categories:", required_categories_list)
+
+            # Check that every category in required_categories_list is in recipe_categories_list.
+            if any(cat not in recipe_categories for cat in required_categories_list):
+                continue
+            # else:
+            #     print("Categories match!")
             tf = len(positions) / math.log(1 + len(recipe['NER']))
             scores[doc_id] += weight_factor * tf * idf
         
@@ -159,9 +166,20 @@ def tf_idf_search_fuzzy(query,
                 continue
             if recipe['cuisine'] not in cuisines:
                 continue
-            # recipe_categories = set(recipe.get('categories', []))
-            # if not required_categories.issubset(recipe_categories):
-            #     continue
+            recipe_categories = recipe['categories']
+            required_categories_list = list(required_categories)
+
+            if '' not in recipe_categories:
+                recipe_categories.append('')
+
+            # print("Titles Recipe categories:", recipe_categories)
+            # print("Titles Required categories:", required_categories_list)
+
+            # Check that every category in required_categories_list is in recipe_categories_list.
+            if any(cat not in recipe_categories for cat in required_categories_list):
+                continue
+            # else:
+            #     print("Categories match!")
             tf = len(positions) / math.log(1 + len(recipe['title']))
             scores[doc_id] += weight_factor * tf * idf
 
