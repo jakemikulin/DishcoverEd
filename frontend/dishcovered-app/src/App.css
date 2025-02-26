@@ -313,4 +313,12 @@
   background-color: #505050;  /* Slightly darker background on hover */
 }
 
-
+.feeling-hungry-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #4caf4f37;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}

@@ -29,6 +29,17 @@ def home():
 @app.route("/api/search")
 def search():
     query = request.args.get("query")
+
+    if query == "surprise":
+        print("Feeling hungry!")
+        total = len(recipes_dict)
+        random_recipe_index = random.randint(0, total)
+        print(f"Random recipe index: {random_recipe_index}")
+        try:
+            return jsonify([[recipes_dict[random_recipe_index], 1.0]])
+        except:
+            return jsonify({"error": "Invalid request"}), 400
+
     categories = request.args.get("categories")
     cuisines = request.args.get("cuisines")
 
@@ -68,11 +79,11 @@ def search():
     except:
         return jsonify({"error":"Invalid request"}), 400
 
-@app.route("/api/feelinghungry")
-def imfeelinghungry():
-    total = len(recipes_dict)
-    random_recipe_index = random.randint(0, total)
-    return jsonify(recipes_dict[random_recipe_index])
+# @app.route("/api/search?query=feelinghungry")
+# def imfeelinghungry():
+#     total = len(recipes_dict)
+#     random_recipe_index = random.randint(0, total)
+#     return jsonify(recipes_dict[random_recipe_index])
 
 if __name__ == "__main__":
     app.run(debug=True)

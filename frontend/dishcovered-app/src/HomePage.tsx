@@ -42,7 +42,7 @@ function HomePage() {
   };
 
   const handleFeelingHungryClick = async () => {
-    navigate('/search?query=feelinghungry');
+    navigate('/search?query=surprise');
   }; 
 
   return (
@@ -85,9 +85,7 @@ function HomePage() {
         <button 
           className="feeling-hungry-btn" 
           onClick={handleFeelingHungryClick}
-          style={{ padding: '10px 20px', fontSize: '16px', fontWeight: 'bold', backgroundColor: '#f9a826', color: 'white', border: 'none', borderRadius: '5px' }}
-        >
-          I'm Feeling Hungry 🍴
+        >✨ Mystery Meal ✨
         </button>
       </div>
 
