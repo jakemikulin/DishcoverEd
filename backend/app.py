@@ -6,7 +6,6 @@ import random
 import json
 import ast
 
-
 with open('inverted_index_simple.pkl', 'rb') as f:
     inverted_index = pickle.load(f)
 

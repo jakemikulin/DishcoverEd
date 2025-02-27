@@ -10,20 +10,20 @@ def load_indices():
     # build_simple_inverted_index(df)
     # build_simple_inverted_index_titles(df)
 
-def get_synonyms(word, word_vectors, top_n=3):
-    """Retrieve top N similar words using Word2Vec/FastText."""
-    try:
-        similar_words = word_vectors.most_similar(word, topn=top_n)
-        return [w for w, _ in similar_words]
-    except KeyError:
-        return []  # Return empty if word is not in the model
+# def get_synonyms(word, word_vectors, top_n=3):
+#     """Retrieve top N similar words using Word2Vec/FastText."""
+#     try:
+#         similar_words = word_vectors.most_similar(word, topn=top_n)
+#         return [w for w, _ in similar_words]
+#     except KeyError:
+#         return []  # Return empty if word is not in the model
 
-def expand_token(token, idf,word_vectors, top_n=3, idf_threshold=2.0):
+# def expand_token(token, idf,word_vectors, top_n=3, idf_threshold=2.0):
 
-    if idf >= idf_threshold:
-        expanded_tokens = [preprocess(exp) for exp in get_synonyms(token)]
-    expanded_tokens.append(token)
-    return set(expanded_tokens)
+#     if idf >= idf_threshold:
+#         expanded_tokens = [preprocess(exp) for exp in get_synonyms(token)]
+#     expanded_tokens.append(token)
+#     return set(expanded_tokens)
 
 def levenshtein_distance(s, t):
     """
