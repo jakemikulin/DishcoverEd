@@ -13,3 +13,5 @@ inverted_index.pkl
 .DS_Store
 */*.pkl
 */*.csv
+*.pkl
+*.csv
