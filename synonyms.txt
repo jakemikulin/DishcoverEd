@@ -1,33 +1,33 @@
 1. Cooking Methods
 
-    Bake → Roast, Cook, Dry-heat cook
+    Bake → Roast, Cook, Dry-heat cook, Dry heat cook
     Boil → Simmer, Poach, Blanch, Scald, Parboil
-    Broil → Grill, Sear, Char, Flame-cook
-    Fry → Sauté, Pan-fry, Stir-fry, Deep-fry, Shallow-fry
-    Sauté → Fry, Pan-fry, Flash-fry
-    Grill → Barbecue, Charbroil, Sear, Flame-cook
-    Roast → Bake, Broil, Brown, Oven-cook
-    Steam → Poach, Blanch, Moist-heat cook
-    Braise → Stew, Simmer, Slow-cook
-    Stew → Braise, Simmer, Slow-cook
-    Sear → Brown, Char, Flash-fry
-    Caramelize → Brown, Glaze, Candy
+    Broil → Grill, Sear, Char, Flame-cook, Flame cook
+    Fry → Sauté, Pan-fry, Stir-fry, Deep-fry, Shallow-fry, Saute, Pan fry, Stir fry, Deep dry, Shallow fry
+    Sauté → Fry, Pan-fry, Flash-fry, Pan fry, Flash fry, Saute
+    Grill → Barbecue, Charbroil, Sear, Flame-cook, Flame cook
+    Roast → Bake, Broil, Brown, Oven-cook, Oven cook
+    Steam → Poach, Blanch, Moist-heat cook, Moist heat cook
+    Braise → Stew, Simmer, Slow-cook, Slow cook
+    Stew → Braise, Simmer, Slow-cook, Slow cook
+    Sear → Brown, Char, Flash-fry, Flash fry
+    Caramelize → Brown, Glaze, Candy, Caramelise
     Poach → Simmer, Scald, Soft-boil
 
 2. Preparation Techniques
 
     Chop → Cut, Dice, Mince, Cube
     Dice → Cube, Chop finely, Mince
-    Mince → Grind, Chop finely, Pulverize
-    Julienne → Shred, Matchstick cut, Fine-strip
+    Mince → Grind, Chop finely, Pulverize, Pulverise
+    Julienne → Shred, Matchstick cut, Fine-strip, Fine strip
     Slice → Cut, Sliver, Carve
     Shred → Grate, Tear, Julienne
     Grate → Shred, Rasp, Zest
-    Mash → Crush, Pulverize, Pulp, Pound
-    Crush → Smash, Pulverize, Pound
+    Mash → Crush, Pulverize, Pulp, Pound, Pulverise
+    Crush → Smash, Pulverize, Pound, Pulverise
     Puree → Blend, Mash, Liquefy
     Peel → Pare, Skin, Remove rind
-    Core → Pit, Seed, Hollow out
+    Core → Pit, Seed, Hollow out, Hollow-out
     Zest → Grate, Scrape, Rasp
     Whisk → Beat, Stir, Blend
     Knead → Work, Fold, Mix, Massage
@@ -85,7 +85,7 @@
 6. Cooking Utensils & Tools
 
     Knife → Blade, Cutter, Cleaver
-    Pan → Skillet, Frying pan, Sauté pan
+    Pan → Skillet, Frying pan, Sauté pan, Saute pan
     Pot → Saucepan, Stockpot, Casserole
     Whisk → Beater, Frother, Blender
     Spatula → Turner, Scraper, Flipper
@@ -183,7 +183,7 @@
     Shrimp → Prawn
     Crawfish → Crayfish
     Monkfish → Anglerfish
-    Scallops → Coquilles Saint-Jacques
+    Scallops → Coquilles Saint-Jacques, Coquilles Saint Jacques
     Squid → Calamari
     Mahi-mahi → Dolphinfish
     Chilean sea bass → Patagonian toothfish
