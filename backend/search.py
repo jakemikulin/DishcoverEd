@@ -258,7 +258,7 @@ def tf_idf_search_fuzzy2(query,
             tokens_to_process = []
             for candidate, distance in top_candidates:
                 # Use weight_factor = 0.5 ** distance
-                weight = 0.5 ** distance
+                weight = 0.75 ** distance
                 print(f"Token '{token}' fuzzy matched with '{candidate}' (distance {distance}, weight {weight}).")
                 tokens_to_process.append((candidate, weight))
         
