@@ -191,6 +191,127 @@ def tf_idf_search_fuzzy(query,
         return ranked_results
     return ranked_results[:top_k]
 
+def tf_idf_search_fuzzy2(query,
+                        cuisines={'southern_us', 'russian', 'chinese',
+                                  'italian', 'mexican', 'french',
+                                  'british', 'cajun_creole', 'filipino',
+                                  'indian', 'irish', 'moroccan',
+                                  'jamaican', 'spanish', 'japanese',
+                                  'greek', 'vietnamese', 'korean',
+                                  'brazilian', 'thai'},
+                        categories={},
+                        inverted_index_file='inverted_index_simple.pkl',
+                        top_k=100,
+                        inverted_index=None,
+                        return_all=False,
+                        inverted_index_titles=None,
+                        recipes_dict=None):
+    """
+    Perform a TF-IDF search over documents using the inverted index.
+    
+    For each query token, if there is no exact match in either index, the top 3 closest
+    tokens (by edit distance) are used. Their contributions are weighted with an exponential 
+    decay factor (0.5 ** edit_distance).
+    """
+    # Preprocess the query to obtain tokens.
+    query_tokens = preprocess(query)
+    print("Query tokens:", query_tokens)
+    
+    # Load inverted index if not provided.
+    if inverted_index is None:
+        with open(inverted_index_file, 'rb') as f:
+            inverted_index = pickle.load(f)
+    
+    # It is assumed that inverted_index_titles is already provided.
+    # Determine the total number of documents.
+    total_docs = max(max(postings.keys()) for postings in inverted_index.values())
+    print("Total documents:", total_docs)
+    
+    # Prepare required categories (filter out empty strings if undesired).
+    required_categories = {cat for cat in categories if cat}.union({''})
+    
+    # Create a collection of all tokens from both indices.
+    # (Assuming both indices use similar tokens.)
+    all_tokens = set(inverted_index.keys()).union(set(inverted_index_titles.keys()))
+    
+    # Dictionary to accumulate TF-IDF scores.
+    scores = defaultdict(float)
+    
+    # Process each token in the query.
+    for token in query_tokens:
+        print("\nProcessing token:", token)
+        # If the token has an exact match in either index, process normally.
+        if token in inverted_index or token in inverted_index_titles:
+            weight_factor = 1.0
+            tokens_to_process = [(token, weight_factor)]
+        else:
+            # No exact match: compute edit distances for all tokens.
+            candidate_distances = []
+            for cand in all_tokens:
+                d = levenshtein_distance(token, cand)
+                candidate_distances.append((cand, d))
+            # Sort by edit distance.
+            candidate_distances.sort(key=lambda x: x[1])
+            # Select the top 3 closest tokens.
+            top_candidates = candidate_distances[:3]
+            # Create a list of tokens to process, with weight decaying exponentially with distance.
+            tokens_to_process = []
+            for candidate, distance in top_candidates:
+                # Use weight_factor = 0.5 ** distance
+                weight = 0.5 ** distance
+                print(f"Token '{token}' fuzzy matched with '{candidate}' (distance {distance}, weight {weight}).")
+                tokens_to_process.append((candidate, weight))
+        
+        # Process each candidate token (either exact or fuzzy).
+        for candidate_token, weight_factor in tokens_to_process:
+            postings = inverted_index.get(candidate_token, {})
+            title_postings = inverted_index_titles.get(candidate_token, {})
+            doc_freq = len(postings) + len(title_postings)
+            if doc_freq == 0:
+                continue
+            print(f"Candidate token '{candidate_token}' document frequency: {doc_freq}")
+            idf = math.log(total_docs / doc_freq)
+            
+            # Process postings from the regular index.
+            for doc_id, positions in postings.items():
+                recipe = recipes_dict.get(doc_id)
+                if recipe is None:
+                    continue
+                if recipe['cuisine'] not in cuisines:
+                    continue
+                recipe_categories = recipe['categories']
+                required_categories_list = list(required_categories)
+                if '' not in recipe_categories:
+                    recipe_categories.append('')
+                if any(cat not in recipe_categories for cat in required_categories_list):
+                    continue
+                tf = len(positions) / math.log(1 + len(recipe['NER']))
+                scores[doc_id] += weight_factor * tf * idf
+            
+            # Process postings from the title index.
+            for doc_id, positions in title_postings.items():
+                recipe = recipes_dict.get(doc_id)
+                if recipe is None:
+                    continue
+                if recipe['cuisine'] not in cuisines:
+                    continue
+                recipe_categories = recipe['categories']
+                required_categories_list = list(required_categories)
+                if '' not in recipe_categories:
+                    recipe_categories.append('')
+                if any(cat not in recipe_categories for cat in required_categories_list):
+                    continue
+                tf = len(positions) / math.log(1 + len(recipe['title']))
+                scores[doc_id] += weight_factor * tf * idf
+
+    # Sort the documents by their cumulative TF-IDF scores.
+    ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    print("Number of results:", len(ranked_results))
+    
+    if return_all:
+        return ranked_results
+    return ranked_results[:top_k]
+
 def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
                                   'british', 'cajun_creole', 'filipino',
