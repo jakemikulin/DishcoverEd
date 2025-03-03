@@ -11,3 +11,7 @@ inverted_index.pkl
 **/__pycache__
 .venv
 .DS_Store
+*/*.pkl
+*/*.csv
+*.pkl
+*.csv

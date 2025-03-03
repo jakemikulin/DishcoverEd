@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from search import tf_idf_search, tf_idf_search_fuzzy
+from search import tf_idf_search, tf_idf_search_fuzzy, tf_idf_search_fuzzy2
 import pickle
 import random
 import json
@@ -70,7 +70,7 @@ def search():
         # can change top k later.
     try:
         print(f"Selected cuisines in search: {selected_cuisines}")
-        tf_idf_results = tf_idf_search_fuzzy(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=selected_categories, cuisines=selected_cuisines)
+        tf_idf_results = tf_idf_search_fuzzy2(query=query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=selected_categories, cuisines=selected_cuisines)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])
