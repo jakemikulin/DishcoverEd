@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from search import tf_idf_search, tf_idf_search_fuzzy, tf_idf_search_fuzzy2
+from load_synonyms import load_synonyms
 import pickle
 import random
 import json
@@ -15,11 +16,12 @@ with open('inverted_index_simple_titles.pkl', 'rb') as f:
 with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 
+load_synonyms()
+
 app = Flask(__name__)
 cors = CORS(app, origins="*")
 # CORS(app, origins="http://localhost:5173")
 app.config['CORS_HEADERS'] = 'Content-Type'
-
 
 @app.route("/")
 def home():
