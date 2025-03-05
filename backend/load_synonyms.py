@@ -1,22 +1,26 @@
 from collections import defaultdict
 import re
 
-def load_synonyms(file_path):
+# Global variable
+_SYN_MAP_CACHE = None
+
+def load_synonyms(file_path="../synonyms.txt"):
+    """Loads synonyms from a file only once and caches them."""
+    global _SYN_MAP_CACHE
+    # Return cached version if already loaded
+    if _SYN_MAP_CACHE is not None:
+        return _SYN_MAP_CACHE
+    
     synonym_map = {}
     with open(file_path, "r", encoding="utf-8") as file:
         for line in file:
             line = line.strip()
-            if "→" in line:  # Identify synonym mappings
+            if "→" in line:
                 canonical, synonyms = map(str.strip, line.split("→"))
                 for synonym in map(str.strip, synonyms.split(",")):
-                    synonym_map[synonym.lower()] = canonical.lower()  # Normalize to lowercase
-    return synonym_map
+                    synonym_map[synonym.lower()] = canonical.lower()
+    
+    _SYN_MAP_CACHE = synonym_map  # Cache the loaded synonyms
+    return _SYN_MAP_CACHE
 
-# Usage
-SYNONYM_MAP = load_synonyms("../synonyms.txt")
-
-# Example normalization
-text = "Mostly cooked Leaf mustard and Umami powder on a Sauté pan!"
-for synonym, canonical in SYNONYM_MAP.items():
-    text = re.sub(r'\b' + re.escape(synonym) + r'\b', canonical, text, flags=re.IGNORECASE) # Returns "medium-well mustard greens and msg on a pan!"
-print(text)
+SYNONYM_MAP = load_synonyms()
