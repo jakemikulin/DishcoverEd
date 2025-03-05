@@ -88,4 +88,14 @@ def search():
 #     return jsonify(recipes_dict[random_recipe_index])
 
 if __name__ == "__main__":
+    print("Starting Flask server...")
+    
+    # Dummy search
+    dummy_query = "chicken soup"
+    try:
+        tf_idf_search_fuzzy2(query=dummy_query, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict)
+    except Exception as e:
+        print(f"Warm-up query failed: {e}")
+    
+    print("Flask server is ready.")
     app.run(debug=True)
