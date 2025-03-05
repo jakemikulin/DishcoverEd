@@ -1,6 +1,7 @@
 import pickle
 import math
 from collections import defaultdict
+import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
 
@@ -213,22 +214,24 @@ def tf_idf_search_fuzzy2(query,
     tokens (by edit distance) are used. Their contributions are weighted with an exponential 
     decay factor (0.5 ** edit_distance).
     """
+    start_time = time.time()
     # Preprocess the query to obtain tokens.
     query_tokens = preprocess(query)
     print("Query tokens:", query_tokens)
-    
-    # Load inverted index if not provided.
-    if inverted_index is None:
-        with open(inverted_index_file, 'rb') as f:
-            inverted_index = pickle.load(f)
+
+    print("Time to preprocess query:", time.time() - start_time)
     
     # It is assumed that inverted_index_titles is already provided.
     # Determine the total number of documents.
     total_docs = max(max(postings.keys()) for postings in inverted_index.values())
     print("Total documents:", total_docs)
+
+    print("time to get total docs:", time.time() - start_time)
     
     # Prepare required categories (filter out empty strings if undesired).
     required_categories = {cat for cat in categories if cat}.union({''})
+
+    print("time to prepare required categories:", time.time() - start_time)
     
     # Create a collection of all tokens from both indices.
     # (Assuming both indices use similar tokens.)
@@ -236,6 +239,8 @@ def tf_idf_search_fuzzy2(query,
     
     # Dictionary to accumulate TF-IDF scores.
     scores = defaultdict(float)
+
+    print("time to load all tokens:", time.time() - start_time)
     
     # Process each token in the query.
     for token in query_tokens:
@@ -304,10 +309,11 @@ def tf_idf_search_fuzzy2(query,
                 tf = len(positions) / math.log(1 + len(recipe['title']))
                 scores[doc_id] += weight_factor * tf * idf
 
+    print("time to process tokens:", time.time() - start_time)
     # Sort the documents by their cumulative TF-IDF scores.
     ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     print("Number of results:", len(ranked_results))
-    
+    print("time to complete search:", time.time() - start_time)
     if return_all:
         return ranked_results
     return ranked_results[:top_k]
