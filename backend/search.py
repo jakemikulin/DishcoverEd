@@ -192,7 +192,7 @@ def tf_idf_search_fuzzy(query,
         return ranked_results
     return ranked_results[:top_k]
 
-def tf_idf_search_fuzzy2(query,
+def tf_idf_search_fuzzy2(query, total_docs,
                         cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
                                   'british', 'cajun_creole', 'filipino',
@@ -223,9 +223,7 @@ def tf_idf_search_fuzzy2(query,
     
     # It is assumed that inverted_index_titles is already provided.
     # Determine the total number of documents.
-    total_docs = max(max(postings.keys()) for postings in inverted_index.values())
     print("Total documents:", total_docs)
-
     print("time to get total docs:", time.time() - start_time)
     
     # Prepare required categories (filter out empty strings if undesired).
@@ -269,14 +267,20 @@ def tf_idf_search_fuzzy2(query,
         
         # Process each candidate token (either exact or fuzzy).
         for candidate_token, weight_factor in tokens_to_process:
+            candidate_time = time.time()
+            print(f"Processing candidate token '{candidate_token}'")
             postings = inverted_index.get(candidate_token, {})
             title_postings = inverted_index_titles.get(candidate_token, {})
-            doc_freq = len(postings) + len(title_postings)
+            # doc_freq = len(postings) + len(title_postings)
+            all_postings = set(postings.keys()).union(set(title_postings.keys()))
+            doc_freq = len(all_postings)
             if doc_freq == 0:
                 continue
             print(f"Candidate token '{candidate_token}' document frequency: {doc_freq}")
             idf = math.log(total_docs / doc_freq)
-            
+
+            print("time to get postings:", time.time() - candidate_time)
+                  
             # Process postings from the regular index.
             for doc_id, positions in postings.items():
                 recipe = recipes_dict.get(doc_id)
@@ -292,6 +296,8 @@ def tf_idf_search_fuzzy2(query,
                     continue
                 tf = len(positions) / math.log(1 + len(recipe['NER']))
                 scores[doc_id] += weight_factor * tf * idf
+
+            print("time to process regular postings:", time.time() - candidate_time)
             
             # Process postings from the title index.
             for doc_id, positions in title_postings.items():
@@ -308,6 +314,8 @@ def tf_idf_search_fuzzy2(query,
                     continue
                 tf = len(positions) / math.log(1 + len(recipe['title']))
                 scores[doc_id] += weight_factor * tf * idf
+
+            print("time to process title postings:", time.time() - candidate_time)
 
     print("time to process tokens:", time.time() - start_time)
     # Sort the documents by their cumulative TF-IDF scores.

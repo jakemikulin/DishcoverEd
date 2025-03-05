@@ -225,7 +225,7 @@ function ResultsPage() {
             recipes.map((recipe, index) => (
               <div key={index} className="recipe-card">
                 <div className="recipe-header">
-                    <h2>{recipe.title.replace(/\b\w/g, char => char.toUpperCase())}</h2>
+                <h2>{recipe.title.replace(/\b\w/g, char => char.toUpperCase()).replace(/'\w/g, match => match.toLowerCase())}</h2>
                     <div className="recipe-link">
                     <a href={recipe.link.startsWith('http') ? recipe.link : `http://${recipe.link}`} target="_blank" rel="noopener noreferrer">View Full Recipe</a>
                   </div>
