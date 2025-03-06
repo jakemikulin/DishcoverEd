@@ -5,7 +5,6 @@ from collections import defaultdict
 import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
-import difflib
 
 ALL_TOKENS = None
 
@@ -193,7 +192,7 @@ def tf_idf_search_fuzzy(query,
         return ranked_results
     return ranked_results[:top_k]
 
-def tf_idf_search_fuzzy2(query, total_docs,
+def tf_idf_search_fuzzy2(query, total_docs, top_5000,
                         cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
                                   'british', 'cajun_creole', 'filipino',
@@ -245,12 +244,13 @@ def tf_idf_search_fuzzy2(query, total_docs,
     for token in query_tokens:
         print("\nProcessing token:", token)
         # If the token has an exact match in either index, process normally.
-        if token in inverted_index or token in inverted_index_titles:
+        # if token in inverted_index or token in inverted_index_titles:
+        if token in top_5000:
             weight_factor = 1.0
             tokens_to_process = [(token, weight_factor)]
         else:
             # Get the top 3 closest tokens using difflib's get_close_matches.
-            top_candidates = difflib.get_close_matches(token, all_tokens, n=3, cutoff=0.0)
+            top_candidates = difflib.get_close_matches(token, top_5000, n=1, cutoff=0.0)
             
             tokens_to_process = []
             for candidate in top_candidates:

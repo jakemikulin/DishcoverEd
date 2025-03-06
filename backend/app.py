@@ -16,6 +16,9 @@ with open('inverted_index_simple_titles.pkl', 'rb') as f:
 with open('recipes_dict.pkl', 'rb') as f:
     recipes_dict = pickle.load(f)
 
+with open('top_5000_terms.pkl', 'rb') as f:
+    top_5000 = pickle.load(f)
+
 total_docs = max(max(postings.keys()) for postings in inverted_index.values())
 load_synonyms()
 
@@ -73,7 +76,7 @@ def search():
         # can change top k later.
     try:
         print(f"Selected cuisines in search: {selected_cuisines}")
-        tf_idf_results = tf_idf_search_fuzzy2(query=query, total_docs=total_docs, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=selected_categories, cuisines=selected_cuisines)
+        tf_idf_results = tf_idf_search_fuzzy2(query=query, total_docs=total_docs, top_5000=top_5000, inverted_index_file='', top_k=10, inverted_index=inverted_index, inverted_index_titles=inverted_index_titles, recipes_dict=recipes_dict, categories=selected_categories, cuisines=selected_cuisines)
         results = []
         for doc_id, score in tf_idf_results:
             results.append([recipes_dict[doc_id],score])
