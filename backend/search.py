@@ -321,6 +321,7 @@ def tf_idf_search_fuzzy2(query, total_docs,
     ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     print("Number of results:", len(ranked_results))
     print("time to complete search:", time.time() - start_time)
+
     if return_all:
         return ranked_results
     return ranked_results[:top_k]
