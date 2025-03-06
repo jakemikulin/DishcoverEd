@@ -6,6 +6,7 @@ import ast
 import pickle
 from collections import defaultdict
 from load_synonyms import SYNONYM_MAP
+from load_stopwords import STOP_WORDS
 
 # Libary of functions that are useful for building the data to be searched through using the backend.
 
