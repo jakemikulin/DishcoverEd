@@ -5,8 +5,12 @@ from collections import defaultdict
 import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
+from symspellpy import SymSpell, Verbosity
 
 ALL_TOKENS = None
+
+sym_spell = SymSpell(max_dictionary_edit_distance=2)
+sym_spell.load_dictionary("frequency_dictionary_recipes.txt", 0, 1)
 
 def load_indices():
     df = load_dataset('recipes_test_data.csv')
@@ -192,6 +196,15 @@ def tf_idf_search_fuzzy(query,
         return ranked_results
     return ranked_results[:top_k]
 
+def spell_check(token):
+    suggestions = sym_spell.lookup(token, Verbosity.CLOSEST, max_edit_distance=2)
+    if suggestions:
+        suggestions = sorted(suggestions, key=lambda x: x.count, reverse=True)
+        for suggestion in suggestions:
+            print(f"Token '{token}' suggestion: '{suggestion.term}' ({suggestion.count} occurrences).")
+        print(f"Token '{token}' corrected to '{suggestions[0].term}'.")
+    return suggestions[0].term if suggestions else token
+
 def tf_idf_search_fuzzy2(query, total_docs, top_5000,
                         cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
@@ -243,6 +256,9 @@ def tf_idf_search_fuzzy2(query, total_docs, top_5000,
     # Process each token in the query.
     for token in query_tokens:
         print("\nProcessing token:", token)
+
+        token = spell_check(token)
+
         # If the token has an exact match in either index, process normally.
         if token in inverted_index or token in inverted_index_titles:
 

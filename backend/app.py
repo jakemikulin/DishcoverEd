@@ -23,9 +23,6 @@ with open('top_5000_terms.pkl', 'rb') as f:
 total_docs = max(max(postings.keys()) for postings in inverted_index.values())
 load_synonyms()
 
-sym_spell = SymSpell(max_dictionary_edit_distance=2)
-sym_spell.load_dictionary("frequency_dictionary_en.txt", 0, 1)
-
 app = Flask(__name__)
 cors = CORS(app, origins="*")
 # CORS(app, origins="http://localhost:5173")
@@ -40,14 +37,14 @@ def search():
     query = request.args.get("query")
     print(f"Query: {query}")
     
-    corrected_tokens = []
-    for token in query.split(" "):
-        token = spell_correct(token)
-        corrected_tokens.append(token)
+    # corrected_tokens = []
+    # for token in query.split(" "):
+    #     token = spell_correct(token)
+    #     corrected_tokens.append(token)
 
-    query = " ".join(corrected_tokens)
+    # query = " ".join(corrected_tokens)
 
-    print(f"Corrected Query: {query}")
+    # print(f"Corrected Query: {query}")
 
     if query == "surprise":
         print("Feeling hungry!")
