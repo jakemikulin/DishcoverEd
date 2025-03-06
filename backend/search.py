@@ -308,8 +308,8 @@ def tf_idf_search_fuzzy2(query, total_docs, top_5000,
                     recipe_categories.append('')
                 if any(cat not in recipe_categories for cat in required_categories_list):
                     continue
-                tf = len(positions) / math.log(1 + (recipe['title'].count(' ') + 1 if recipe['title'].strip() else 1))
-                scores[doc_id] += weight_factor * tf * idf
+                tf = 1 / math.log(1 + (recipe['title'].count(' ') + 1 if recipe['title'].strip() else 1))
+                scores[doc_id] += 2 * weight_factor * tf * idf
 
             print("time to process title postings:", time.time() - candidate_time)
 
@@ -556,7 +556,7 @@ def sort_by_edit_distance(token, candidates):
 
 # Example usage:
 if __name__ == '__main__':
-    load_indices()
+    # load_indices()
 
     # # Example query string.
     # query = "chicken garlic lemon"
