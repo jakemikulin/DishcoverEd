@@ -5,6 +5,7 @@ from collections import defaultdict
 import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
+import difflib
 
 ALL_TOKENS = None
 
@@ -289,7 +290,7 @@ def tf_idf_search_fuzzy2(query, total_docs,
                     recipe_categories.append('')
                 if any(cat not in recipe_categories for cat in required_categories_list):
                     continue
-                tf = len(positions) / math.log(1 + len(recipe['NER']))
+                tf = len(positions) / math.log(1 + (recipe['NER'].count(',') + 1 if recipe['NER'].strip() else 1))
                 scores[doc_id] += weight_factor * tf * idf
 
             print("time to process regular postings:", time.time() - candidate_time)
@@ -307,7 +308,7 @@ def tf_idf_search_fuzzy2(query, total_docs,
                     recipe_categories.append('')
                 if any(cat not in recipe_categories for cat in required_categories_list):
                     continue
-                tf = len(positions) / math.log(1 + len(recipe['title']))
+                tf = len(positions) / math.log(1 + (recipe['title'].count(' ') + 1 if recipe['title'].strip() else 1))
                 scores[doc_id] += weight_factor * tf * idf
 
             print("time to process title postings:", time.time() - candidate_time)
