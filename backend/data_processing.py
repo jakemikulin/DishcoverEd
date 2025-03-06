@@ -54,6 +54,7 @@ def preprocess(text):
     try:
         text = normalize_text(text)
         tokens = tokenise_title(text)
+        tokens = remove_stop_words(tokens)
         preprocessed = stem(tokens)
     except Exception as e:
         print(f"Error in preprocessing: {e}")
@@ -77,7 +78,7 @@ def tokenise_title(raw_text):
 
 def remove_stop_words(word_array):
     # Change stop_words_path if required.
-    stop_words_path = 'englishST.txt'
+    stop_words_path = '../stop_words.txt'
     lines = []
     with open(stop_words_path, 'r') as f:
         stop_words = set(f.read().splitlines())
