@@ -4,6 +4,7 @@ from collections import defaultdict
 import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
+import difflib
 
 ALL_TOKENS = None
 
