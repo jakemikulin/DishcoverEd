@@ -4,6 +4,7 @@ from data_processing import build_simple_inverted_index
 from data_processing import build_inverted_index_with_ingredient_ids
 from data_processing import build_simple_inverted_index_titles
 
+# DO NOT RUN THIS! IT DOES NOT WORK (MAYBE).
 # Run this to build all needed pkl files. 
 def main():
     df = load_dataset('recipes_with_labels_5000.csv')
