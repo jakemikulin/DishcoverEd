@@ -6,6 +6,7 @@ import pickle
 import random
 import json
 import ast
+from symspellpy import SymSpell, Verbosity
 
 with open('inverted_index_simple.pkl', 'rb') as f:
     inverted_index = pickle.load(f)
@@ -22,6 +23,9 @@ with open('top_5000_terms.pkl', 'rb') as f:
 total_docs = max(max(postings.keys()) for postings in inverted_index.values())
 load_synonyms()
 
+sym_spell = SymSpell(max_dictionary_edit_distance=2)
+sym_spell.load_dictionary("frequency_dictionary_en.txt", 0, 1)
+
 app = Flask(__name__)
 cors = CORS(app, origins="*")
 # CORS(app, origins="http://localhost:5173")
@@ -34,6 +38,16 @@ def home():
 @app.route("/api/search")
 def search():
     query = request.args.get("query")
+    print(f"Query: {query}")
+    
+    corrected_tokens = []
+    for token in query.split(" "):
+        token = spell_correct(token)
+        corrected_tokens.append(token)
+
+    query = " ".join(corrected_tokens)
+
+    print(f"Corrected Query: {query}")
 
     if query == "surprise":
         print("Feeling hungry!")
@@ -83,6 +97,10 @@ def search():
         return jsonify(results)
     except:
         return jsonify({"error":"Invalid request"}), 400
+
+def spell_correct(token):
+    suggestions = sym_spell.lookup(token, Verbosity.CLOSEST, max_edit_distance=2, include_unknown=True)
+    return suggestions[0].term if suggestions else token
 
 # @app.route("/api/search?query=feelinghungry")
 # def imfeelinghungry():
