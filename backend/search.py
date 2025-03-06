@@ -555,7 +555,7 @@ def sort_by_edit_distance(token, candidates):
     
 
 # Example usage:
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # load_indices()
 
     # # Example query string.
