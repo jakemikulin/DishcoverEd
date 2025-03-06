@@ -250,7 +250,24 @@ def tf_idf_search_fuzzy2(query, total_docs, top_5000,
             tokens_to_process = [(token, weight_factor)]
         else:
             # Get the top 3 closest tokens using difflib's get_close_matches.
-            top_candidates = difflib.get_close_matches(token, top_5000, n=1, cutoff=0.0)
+            top_candidates = difflib.get_close_matches(token, top_5000, n=5, cutoff=0.0)
+            best_candidate = []
+            best_candidate_occurrences = 0
+            for candidate in top_candidates:
+                # Get the most used token from the top 3 candidates.
+                postings = inverted_index.get(candidate, {})
+                title_postings = inverted_index_titles.get(candidate, {})
+                occurences = len(postings) + len(title_postings)
+                if occurences > best_candidate_occurrences:
+                    best_candidate = candidate
+                    best_candidate_occurrences = occurences
+
+            if best_candidate:
+                top_candidates = [best_candidate]
+
+            top_candidates.append(token)
+
+            print(f"Token '{token}' fuzzy matched with {top_candidates}")
             
             tokens_to_process = []
             for candidate in top_candidates:
