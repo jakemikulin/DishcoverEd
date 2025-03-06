@@ -38,11 +38,12 @@ def normalize_text(text):
     for synonym, canonical in SYNONYM_MAP.items():
         text = re.sub(r'\b' + re.escape(synonym) + r'\b', canonical, text, flags=re.IGNORECASE)
     return text
-
+    
 def preprocess_title(text):
     try:
         text = normalize_text(text)
         tokens = tokenise(text)
+        tokens = remove_stop_words(tokens)
         preprocessed = stem(tokens)
     except Exception as e:
         print(f"Error in preprocessing: {e}")
@@ -61,7 +62,6 @@ def preprocess(text):
         preprocessed = []
 
     return preprocessed
-
     
 def tokenise(raw_text):
     # store measurements/quantities together (eg. 1 c. and 1 1/2 lb.)
@@ -76,14 +76,8 @@ def tokenise_title(raw_text):
 
     return match
 
-def remove_stop_words(word_array):
-    # Change stop_words_path if required.
-    stop_words_path = '../stop_words.txt'
-    lines = []
-    with open(stop_words_path, 'r') as f:
-        stop_words = set(f.read().splitlines())
-    
-    filtered = [word for word in word_array if word not in stop_words]
+def remove_stop_words(word_array):    
+    filtered = [word for word in word_array if word not in STOP_WORDS]
     return filtered
 
 def stem(word_array):
