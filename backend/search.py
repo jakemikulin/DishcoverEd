@@ -247,21 +247,16 @@ def tf_idf_search_fuzzy2(query, total_docs,
             weight_factor = 1.0
             tokens_to_process = [(token, weight_factor)]
         else:
-            # No exact match: compute edit distances for all tokens.
-            candidate_distances = []
-            for cand in all_tokens:
-                d = levenshtein_distance(token, cand)
-                candidate_distances.append((cand, d))
-            # Sort by edit distance.
-            candidate_distances.sort(key=lambda x: x[1])
-            # Select the top 3 closest tokens.
-            top_candidates = candidate_distances[:3]
-            # Create a list of tokens to process, with weight decaying exponentially with distance.
+            # Get the top 3 closest tokens using difflib's get_close_matches.
+            top_candidates = difflib.get_close_matches(token, all_tokens, n=3, cutoff=0.0)
+            
             tokens_to_process = []
-            for candidate, distance in top_candidates:
-                # Use weight_factor = 0.5 ** distance
-                weight = 0.75 ** distance
-                print(f"Token '{token}' fuzzy matched with '{candidate}' (distance {distance}, weight {weight}).")
+            for candidate in top_candidates:
+                # Compute the similarity ratio between the token and the candidate.
+                ratio = difflib.SequenceMatcher(None, token, candidate).ratio()
+                # Use the similarity ratio directly as the weight.
+                weight = ratio
+                print(f"Token '{token}' fuzzy matched with '{candidate}' (similarity ratio {ratio:.2f}, weight {weight:.2f}).")
                 tokens_to_process.append((candidate, weight))
         
         # Process each candidate token (either exact or fuzzy).
