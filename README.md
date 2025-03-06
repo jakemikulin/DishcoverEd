@@ -19,7 +19,7 @@ Virtual Environment
 Terminal 1
 - cd backend 
 - python init_data.py
-- python app.py
+- flask run --no-reload
 
 Terminal 2
 - cd frontend/dishcovered-app
