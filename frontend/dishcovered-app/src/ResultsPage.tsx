@@ -70,7 +70,7 @@ function ResultsPage() {
       //     mode: 'cors'},);
 
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/search?query=${encodeURIComponent(query)}&${filterParams.toString()}`, {
+        const response = await fetch(`http://35.242.176.107/api/search?query=${encodeURIComponent(query)}&${filterParams.toString()}`, {
           method: 'GET', 
           headers: { 'Content-Type': 'application/json' }, 
           mode: 'cors'
