@@ -11,7 +11,7 @@ For too long, people have been fruitlessly searching for recipes, only to have t
 - [Mani Kher](https://github.com/manixkher) (Backend)
 - [Aadarsh Sundar](https://github.com/AadarshSu) (Backend)
 
-## Commands to Run [TEST]
+## Commands to Run [Local]
 
 Virtual Environment
 - .venv\Scripts\activate
@@ -24,3 +24,14 @@ Terminal 1
 Terminal 2
 - cd frontend/dishcovered-app
 - npm run dev
+
+## Commands for GCP
+
+pm2 list
+pm2 restart name
+pm2 logs name
+
+flask run --no-reload
+
+pm2 start "source .venv/bin/activate && flask run --no-reload" --name backend
+
