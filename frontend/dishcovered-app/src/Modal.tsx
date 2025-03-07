@@ -15,9 +15,20 @@ const categoriesList = [
   'Spice', 'Vegetable'
 ];
 
-function Modal({ filters, onClose, onApplyFilters }) {
-  const [selectedCuisines, setSelectedCuisines] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState({});
+interface Filters {
+  cuisines: Record<string, boolean>;
+  categories: Record<string, boolean>;
+}
+
+interface ModalProps {
+  filters: Filters;
+  onClose: () => void;
+  onApplyFilters: (filters: Filters) => void;
+}
+
+function Modal({ filters, onClose, onApplyFilters }: ModalProps) {
+  const [selectedCuisines, setSelectedCuisines] = useState<Record<string, boolean>>({});
+  const [selectedCategories, setSelectedCategories] = useState<Record<string, boolean>>({});
 
   // Initialize state with the filters passed as props
   useEffect(() => {
@@ -26,7 +37,7 @@ function Modal({ filters, onClose, onApplyFilters }) {
   }, [filters]);
 
   // Handle toggle of cuisine
-  const handleCuisineToggle = (cuisine) => {
+  const handleCuisineToggle = (cuisine: string) => {
     setSelectedCuisines(prevState => ({
       ...prevState,
       [cuisine]: !prevState[cuisine]
@@ -34,7 +45,7 @@ function Modal({ filters, onClose, onApplyFilters }) {
   };
 
   // Handle toggle of category
-  const handleCategoryToggle = (category) => {
+  const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prevState => ({
       ...prevState,
       [category]: !prevState[category]
@@ -42,9 +53,12 @@ function Modal({ filters, onClose, onApplyFilters }) {
   };
 
   // Handle applying the filters
-  const handleApplyFilters = () => {
-    onApplyFilters({ cuisines: selectedCuisines, categories: selectedCategories });
-    onClose();  // Close the modal after applying filters
+  const handleApply = () => {
+    onApplyFilters({
+      cuisines: selectedCuisines,
+      categories: selectedCategories,
+    });
+    onClose();
   };
 
   return (
@@ -53,7 +67,7 @@ function Modal({ filters, onClose, onApplyFilters }) {
         <button className="close-btn" onClick={onClose}>X</button>
         <h2>Filters</h2>
         
-        <button className="apply-filters-btn" onClick={handleApplyFilters}>
+        <button className="apply-filters-btn" onClick={handleApply}>
           Apply Filters
         </button>
         

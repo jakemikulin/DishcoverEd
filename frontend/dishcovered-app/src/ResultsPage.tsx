@@ -5,6 +5,15 @@ import dishcoveredLogo from './assets/dishcovered-logo-green.png';
 import Modal from './Modal';
 import { useFilters } from './FilterContext';
 
+interface Recipe {
+  title: string;
+  ingredients: string[];
+  instructions: string[];
+  link: string;
+  cuisine: string;
+  tags: string[];
+}
+
 const highlightText = (text: string, query: string) => {
   return text
   if (!query) return text;
@@ -26,10 +35,12 @@ const highlightText = (text: string, query: string) => {
 function ResultsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query')?.toLowerCase() || '';
-  const [recipes, setRecipes] = useState([]);
+
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [searchTerm, setSearchTerm] = useState(query);
   const navigate = useNavigate();
   const [searchTime, setSearchTime] = useState<number | null>(null);
+
   const { filters, setFilters } = useFilters();
 
   const defaultFilters = {
@@ -86,7 +97,7 @@ function ResultsPage() {
 
         if (Array.isArray(data)) {
           // Transform API response to match frontend
-          const formattedRecipes = data.map(([recipe, score]) => ({
+          const formattedRecipes: Recipe[] = data.map(([recipe]: any) => ({
             title: recipe.title,
             ingredients: parseStringArray(recipe.ingredients),
             instructions: parseStringArray(recipe.directions), 
