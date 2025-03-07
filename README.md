@@ -34,4 +34,14 @@ pm2 logs name
 flask run --no-reload
 
 pm2 start "source .venv/bin/activate && flask run --no-reload" --name backend
+pm2 start "npm run dev -- --host 0.0.0.0" --name frontend
+
+sudo nano /etc/nginx/sites-available/dishcovered
+
+sudo lsof -i :5000
+
+sudo cat /var/log/nginx/error.log | tail -50
+
+sudo nginx -t
+sudo systemctl restart nginx
 
