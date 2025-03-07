@@ -85,7 +85,7 @@ function HomePage() {
         <button 
           className="feeling-hungry-btn" 
           onClick={handleFeelingHungryClick}
-        >✨ Mystery Meal ✨
+        >🍴 I'm Feeling Hungry 🍴
         </button>
       </div>
 

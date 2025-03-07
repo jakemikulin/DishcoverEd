@@ -1,8 +1,16 @@
+import difflib
 import pickle
 import math
 from collections import defaultdict
+import time
 from data_processing import preprocess, build_simple_inverted_index_titles, load_dataset, build_simple_inverted_index, save_recipes_as_dict_pkl
 import numpy as np
+from symspellpy import SymSpell, Verbosity
+
+ALL_TOKENS = None
+
+sym_spell = SymSpell(max_dictionary_edit_distance=2)
+sym_spell.load_dictionary("frequency_dictionary_recipes.txt", 0, 1)
 
 def load_indices():
     df = load_dataset('recipes_test_data.csv')
@@ -10,20 +18,13 @@ def load_indices():
     # build_simple_inverted_index(df)
     # build_simple_inverted_index_titles(df)
 
-# def get_synonyms(word, word_vectors, top_n=3):
-#     """Retrieve top N similar words using Word2Vec/FastText."""
-#     try:
-#         similar_words = word_vectors.most_similar(word, topn=top_n)
-#         return [w for w, _ in similar_words]
-#     except KeyError:
-#         return []  # Return empty if word is not in the model
-
-# def expand_token(token, idf,word_vectors, top_n=3, idf_threshold=2.0):
-
-#     if idf >= idf_threshold:
-#         expanded_tokens = [preprocess(exp) for exp in get_synonyms(token)]
-#     expanded_tokens.append(token)
-#     return set(expanded_tokens)
+def get_all_tokens(inverted_index, inverted_index_titles):
+    """Compute all tokens from both indices only once."""
+    global ALL_TOKENS
+    if ALL_TOKENS is None:
+        print("Computing all_tokens...")
+        ALL_TOKENS = set(inverted_index.keys()).union(inverted_index_titles.keys()) if inverted_index_titles else set(inverted_index.keys())
+    return ALL_TOKENS
 
 def levenshtein_distance(s, t):
     """
@@ -60,14 +61,8 @@ def get_fuzzy_match(token, token_set, max_distance=1):
     return best_match, best_distance
 
 def tf_idf_search_fuzzy(query,
-                  cuisines={'southern_us', 'russian', 'chinese',
-                            'italian', 'mexican', 'french',
-                            'british', 'cajun_creole', 'filipino',
-                            'indian', 'irish', 'moroccan',
-                            'jamaican', 'spanish', 'japanese',
-                            'greek', 'vietnamese', 'korean',
-                            'brazilian', 'thai'},
-                  categories={},
+                  cuisines=None,
+                  categories=None,
                   inverted_index_file='inverted_index_simple.pkl',
                   top_k=100,
                   inverted_index=None,
@@ -81,6 +76,15 @@ def tf_idf_search_fuzzy(query,
     small edit distance of a token that is in an index, it contributes to the score
     with a reduced weighting.
     """
+
+    if cuisines is None:
+        cuisines = {'southern_us', 'russian', 'chinese', 'italian', 'mexican', 'french',
+                    'british', 'cajun_creole', 'filipino', 'indian', 'irish', 'moroccan',
+                    'jamaican', 'spanish', 'japanese', 'greek', 'vietnamese', 'korean',
+                    'brazilian', 'thai'}
+    if categories is None:
+        categories = set()
+
     # Preprocess the query to obtain tokens.
     query_tokens = preprocess(query)
     print("Query tokens:", query_tokens)
@@ -90,16 +94,17 @@ def tf_idf_search_fuzzy(query,
         with open(inverted_index_file, 'rb') as f:
             inverted_index = pickle.load(f)
     
-    # It is assumed that inverted_index_titles is already provided.
     # Determine the total number of documents.
     total_docs = max(max(postings.keys()) for postings in inverted_index.values())
     print("Total documents:", total_docs)
     
     # Prepare required categories (filter out empty strings if undesired).
-    required_categories = {cat for cat in categories if cat}
+    # required_categories = {cat for cat in categories if cat}
+    required_categories = categories.union({''})
     
     # Create a set of all tokens from both indices.
-    all_tokens = set(inverted_index.keys()).union(set(inverted_index_titles.keys()))
+    # all_tokens = set(inverted_index.keys()).union(set(inverted_index_titles.keys()))
+    all_tokens = get_all_tokens(inverted_index, inverted_index_titles)
     
     # A dictionary to accumulate TF-IDF scores for each document.
     scores = defaultdict(float)
@@ -145,8 +150,8 @@ def tf_idf_search_fuzzy(query,
             recipe_categories = recipe['categories']
             required_categories_list = list(required_categories)
 
-            if '' not in recipe_categories:
-                recipe_categories.append('')
+            # if '' not in recipe_categories:
+            #     recipe_categories.append('')
 
             # print("Recipe categories:", recipe_categories)
             # print("Required categories:", required_categories_list)
@@ -191,7 +196,16 @@ def tf_idf_search_fuzzy(query,
         return ranked_results
     return ranked_results[:top_k]
 
-def tf_idf_search_fuzzy2(query,
+def spell_check(token):
+    suggestions = sym_spell.lookup(token, Verbosity.CLOSEST, max_edit_distance=2)
+    if suggestions:
+        suggestions = sorted(suggestions, key=lambda x: x.count, reverse=True)
+        for suggestion in suggestions:
+            print(f"Token '{token}' suggestion: '{suggestion.term}' ({suggestion.count} occurrences).")
+        print(f"Token '{token}' corrected to '{suggestions[0].term}'.")
+    return suggestions[0].term if suggestions else token
+
+def tf_idf_search_fuzzy2(query, total_docs, top_5000,
                         cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
                                   'british', 'cajun_creole', 'filipino',
@@ -213,22 +227,22 @@ def tf_idf_search_fuzzy2(query,
     tokens (by edit distance) are used. Their contributions are weighted with an exponential 
     decay factor (0.5 ** edit_distance).
     """
+    start_time = time.time()
     # Preprocess the query to obtain tokens.
     query_tokens = preprocess(query)
     print("Query tokens:", query_tokens)
-    
-    # Load inverted index if not provided.
-    if inverted_index is None:
-        with open(inverted_index_file, 'rb') as f:
-            inverted_index = pickle.load(f)
+
+    print("Time to preprocess query:", time.time() - start_time)
     
     # It is assumed that inverted_index_titles is already provided.
     # Determine the total number of documents.
-    total_docs = max(max(postings.keys()) for postings in inverted_index.values())
     print("Total documents:", total_docs)
+    print("time to get total docs:", time.time() - start_time)
     
     # Prepare required categories (filter out empty strings if undesired).
     required_categories = {cat for cat in categories if cat}.union({''})
+
+    print("time to prepare required categories:", time.time() - start_time)
     
     # Create a collection of all tokens from both indices.
     # (Assuming both indices use similar tokens.)
@@ -236,42 +250,67 @@ def tf_idf_search_fuzzy2(query,
     
     # Dictionary to accumulate TF-IDF scores.
     scores = defaultdict(float)
+
+    print("time to load all tokens:", time.time() - start_time)
     
     # Process each token in the query.
     for token in query_tokens:
         print("\nProcessing token:", token)
+
+        token = spell_check(token)
+
         # If the token has an exact match in either index, process normally.
         if token in inverted_index or token in inverted_index_titles:
-            weight_factor = 1.0
-            tokens_to_process = [(token, weight_factor)]
-        else:
-            # No exact match: compute edit distances for all tokens.
-            candidate_distances = []
-            for cand in all_tokens:
-                d = levenshtein_distance(token, cand)
-                candidate_distances.append((cand, d))
-            # Sort by edit distance.
-            candidate_distances.sort(key=lambda x: x[1])
-            # Select the top 3 closest tokens.
-            top_candidates = candidate_distances[:3]
-            # Create a list of tokens to process, with weight decaying exponentially with distance.
+
+        # if token in top_5000:
+        #     weight_factor = 1.0
+        #     tokens_to_process = [(token, weight_factor)]
+        # else:
+        #     # Get the top 3 closest tokens using difflib's get_close_matches.
+        #     top_candidates = difflib.get_close_matches(token, top_5000, n=5, cutoff=0.0)
+        #     best_candidate = []
+        #     best_candidate_occurrences = 0
+        #     for candidate in top_candidates:
+        #         # Get the most used token from the top 3 candidates.
+        #         postings = inverted_index.get(candidate, {})
+        #         title_postings = inverted_index_titles.get(candidate, {})
+        #         occurences = len(postings) + len(title_postings)
+        #         if occurences > best_candidate_occurrences:
+        #             best_candidate = candidate
+        #             best_candidate_occurrences = occurences
+
+        #     if best_candidate:
+        #         top_candidates = [best_candidate]
+            top_candidates = []
+            top_candidates.append(token)
+
+            print(f"Token '{token}' fuzzy matched with {top_candidates}")
+            
             tokens_to_process = []
-            for candidate, distance in top_candidates:
-                # Use weight_factor = 0.5 ** distance
-                weight = 0.75 ** distance
-                print(f"Token '{token}' fuzzy matched with '{candidate}' (distance {distance}, weight {weight}).")
+            for candidate in top_candidates:
+                # Compute the similarity ratio between the token and the candidate.
+                ratio = difflib.SequenceMatcher(None, token, candidate).ratio()
+                # Use the similarity ratio directly as the weight.
+                weight = ratio
+                print(f"Token '{token}' fuzzy matched with '{candidate}' (similarity ratio {ratio:.2f}, weight {weight:.2f}).")
                 tokens_to_process.append((candidate, weight))
         
         # Process each candidate token (either exact or fuzzy).
         for candidate_token, weight_factor in tokens_to_process:
+            candidate_time = time.time()
+            print(f"Processing candidate token '{candidate_token}'")
             postings = inverted_index.get(candidate_token, {})
             title_postings = inverted_index_titles.get(candidate_token, {})
-            doc_freq = len(postings) + len(title_postings)
+            # doc_freq = len(postings) + len(title_postings)
+            all_postings = set(postings.keys()).union(set(title_postings.keys()))
+            doc_freq = len(all_postings)
             if doc_freq == 0:
                 continue
             print(f"Candidate token '{candidate_token}' document frequency: {doc_freq}")
             idf = math.log(total_docs / doc_freq)
-            
+
+            print("time to get postings:", time.time() - candidate_time)
+                  
             # Process postings from the regular index.
             for doc_id, positions in postings.items():
                 recipe = recipes_dict.get(doc_id)
@@ -285,8 +324,10 @@ def tf_idf_search_fuzzy2(query,
                     recipe_categories.append('')
                 if any(cat not in recipe_categories for cat in required_categories_list):
                     continue
-                tf = len(positions) / math.log(1 + len(recipe['NER']))
+                tf = len(positions) / math.log(1 + (recipe['NER'].count(',') + 1 if recipe['NER'].strip() else 1))
                 scores[doc_id] += weight_factor * tf * idf
+
+            print("time to process regular postings:", time.time() - candidate_time)
             
             # Process postings from the title index.
             for doc_id, positions in title_postings.items():
@@ -301,16 +342,112 @@ def tf_idf_search_fuzzy2(query,
                     recipe_categories.append('')
                 if any(cat not in recipe_categories for cat in required_categories_list):
                     continue
-                tf = len(positions) / math.log(1 + len(recipe['title']))
-                scores[doc_id] += weight_factor * tf * idf
+                tf = 1 / math.log(1 + (recipe['title'].count(' ') + 1 if recipe['title'].strip() else 1))
+                scores[doc_id] += 2 * weight_factor * tf * idf
 
+            print("time to process title postings:", time.time() - candidate_time)
+
+    print("time to process tokens:", time.time() - start_time)
     # Sort the documents by their cumulative TF-IDF scores.
     ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     print("Number of results:", len(ranked_results))
-    
+    print("time to complete search:", time.time() - start_time)
+
     if return_all:
         return ranked_results
     return ranked_results[:top_k]
+
+def tf_idf_search_fuzzy4(query,
+                        cuisines=None,
+                        categories=None,
+                        inverted_index_file='inverted_index_simple.pkl',
+                        top_k=100,
+                        inverted_index=None,
+                        return_all=False,
+                        inverted_index_titles=None,
+                        recipes_dict=None):
+    """
+    Perform a TF-IDF search over documents using the inverted index.
+    Uses fuzzy matching **only when necessary**.
+    """
+    start_time = time.time()
+
+    if cuisines is None:
+        cuisines = {'southern_us', 'russian', 'chinese', 'italian', 'mexican', 'french',
+                    'british', 'cajun_creole', 'filipino', 'indian', 'irish', 'moroccan',
+                    'jamaican', 'spanish', 'japanese', 'greek', 'vietnamese', 'korean',
+                    'brazilian', 'thai'}
+    if categories is None:
+        categories = set()
+
+    if inverted_index is None:
+        with open(inverted_index_file, 'rb') as f:
+            inverted_index = pickle.load(f)
+
+    # Preprocess the query to obtain tokens
+    query_tokens = preprocess(query)
+    print("Query tokens:", query_tokens)
+
+    # Compute all tokens only once**
+    all_tokens = get_all_tokens(inverted_index, inverted_index_titles)
+
+    # Determine total number of documents
+    total_docs = max(max(postings.keys()) for postings in inverted_index.values())
+
+    required_categories = categories.union({''})
+
+    scores = defaultdict(float)
+
+    for token in query_tokens:
+        print("\nProcessing token:", token)
+
+        if token in inverted_index or token in inverted_index_titles:
+            # Skip fuzzy search if exact match exists
+            tokens_to_process = [(token, 1.0)]
+        else:
+            candidate_distances = []
+            for cand in all_tokens:
+                d = levenshtein_distance(token, cand)
+                candidate_distances.append((cand, d))
+            candidate_distances.sort(key=lambda x: x[1])
+            top_candidates = candidate_distances[:3]
+            tokens_to_process = [(candidate, 0.75 ** distance) for candidate, distance in top_candidates]
+            print(f"Token '{token}' fuzzy matched with {top_candidates}")
+
+        # Process each token (either exact or fuzzy match)
+        for candidate_token, weight_factor in tokens_to_process:
+            postings = inverted_index.get(candidate_token, {})
+            title_postings = inverted_index_titles.get(candidate_token, {})
+
+            doc_freq = len(postings) + len(title_postings)
+            if doc_freq == 0:
+                continue
+
+            idf = math.log(total_docs / doc_freq)
+
+            # Process postings from the regular index
+            for doc_id, positions in postings.items():
+                recipe = recipes_dict.get(doc_id)
+                if not recipe or recipe['cuisine'] not in cuisines or not required_categories.issubset(recipe['categories']):
+                    continue
+                tf = len(positions) / math.log(1 + len(recipe['NER']))
+                scores[doc_id] += weight_factor * tf * idf
+
+            # Process postings from the title index
+            for doc_id, positions in title_postings.items():
+                recipe = recipes_dict.get(doc_id)
+                if not recipe or recipe['cuisine'] not in cuisines or not required_categories.issubset(recipe['categories']):
+                    continue
+                tf = len(positions) / math.log(1 + len(recipe['title']))
+                scores[doc_id] += weight_factor * tf * idf
+
+    # Sort and return results
+    ranked_results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    print("Number of results:", len(ranked_results))
+    print("Time to complete search:", time.time() - start_time)
+
+    return ranked_results if return_all else ranked_results[:top_k]
+
 
 def tf_idf_search(query, cuisines={'southern_us', 'russian', 'chinese',
                                   'italian', 'mexican', 'french',
@@ -452,8 +589,8 @@ def sort_by_edit_distance(token, candidates):
     
 
 # Example usage:
-if __name__ == '__main__':
-    load_indices()
+# if __name__ == '__main__':
+    # load_indices()
 
     # # Example query string.
     # query = "chicken garlic lemon"
