@@ -40,8 +40,14 @@ sudo nano /etc/nginx/sites-available/dishcovered
 
 sudo lsof -i :5000
 
+curl -I http://35.242.176.107/api/search?query=surprise
+curl -I http://127.0.0.1:5000/api/search?query=surprise
+curl -I http://127.0.0.1/api/search?query=surprise
+
+
 sudo cat /var/log/nginx/error.log | tail -50
 
 sudo nginx -t
 sudo systemctl restart nginx
 
+curl -s http://35.242.176.107/api/search?query=surprise | jq
